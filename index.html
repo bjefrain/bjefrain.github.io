@@ -1511,7 +1511,9 @@
         chatBox.style.display = (chatBox.style.display === 'none' || chatBox.style.display === '') ? 'block' : 'none';
     });
 
+    // Vincular eventos para enviar mensajes
     document.getElementById('sendButton').addEventListener('click', sendMessage);
+
     document.getElementById('chatInput').addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
             sendMessage();
@@ -1523,7 +1525,8 @@
     function sendMessage() {
         const chatInput = document.getElementById('chatInput');
         const message = chatInput.value;
-        if (!message) return;
+
+        if (!message.trim()) return; // Evitar enviar mensajes vacíos
 
         const chatContent = document.getElementById('chatContent');
         const userMessageDiv = document.createElement('div');
@@ -1532,9 +1535,10 @@
         chatContent.appendChild(userMessageDiv);
         chatHistory.push({ role: 'user', content: message, answer: "" });
 
-        chatInput.value = '';
+        chatInput.value = ''; // Limpiar el input después de enviar el mensaje
         chatContent.scrollTop = chatContent.scrollHeight;
 
+        // Simular la respuesta del asistente
         simulateAssistantResponse("Esta es una respuesta simulada.", chatContent);
     }
 
