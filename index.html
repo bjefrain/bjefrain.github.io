@@ -1504,264 +1504,253 @@
              }
          })
          
-     <script>
-   document.getElementById('chatIcon').addEventListener('click', function() {
-      var chatBox = document.getElementById('chatBox');
-      if (chatBox.style.display === 'none' || chatBox.style.display === '') {
-         chatBox.style.display = 'block';
-      } else {
-         chatBox.style.display = 'none';
-      }
-   });
-
-   document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
-      document.getElementById('chatBox').style.display = 'none';
-   });
-
-   document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
-      var chatBox = document.getElementById('chatBox');
-      var chatContent = document.getElementById('chatContent');
-      if (chatBox.classList.contains('expanded')) {
-         chatBox.classList.remove('expanded');
-         chatContent.classList.remove('expanded');
-         this.textContent = 'expand_more';
-      } else {
-         chatBox.classList.add('expanded');
-         chatContent.classList.add('expanded');
-         this.textContent = 'expand_less';
-      }
-   });
-
-   let chatHistory = [];
-   async function sendMessage() {
-      var chatInput = document.getElementById('chatInput');
-      var message = chatInput.value.trim();
-      if (message !== "") {
-         var chatContent = document.getElementById('chatContent');
-         var spinner = document.getElementById('spinner');
-         spinner.style.display = 'block'; // Mostrar spinner
-
-         // Añadir el mensaje enviado por el usuario
-         var messageDiv = document.createElement('div');
-         messageDiv.className = 'message sent';
-         messageDiv.textContent = message;
-         chatContent.appendChild(messageDiv);
-         chatContent.scrollTop = chatContent.scrollHeight;
-         
-         // Limpiar el input y desactivar el envío mientras se espera la respuesta
-         chatInput.value = "";
-         chatInput.disabled = true;
-         document.getElementById('sendButton').disabled = true;
-
-         // Hacer la solicitud a la API
-         try {
-            const response = await fetch('https://fkcvlolj22.execute-api.us-west-1.amazonaws.com/dev/chat', {
-               method: 'POST',
-               headers: {
-               'Content-Type': 'application/json'
-               },
-               body: JSON.stringify({ query: message, messages: chatHistory })
-            });
-            const data = await response.json();
-            // Agregar el mensaje del usuario y la respuesta al historial
-            chatHistory.push({ role: 'user', content: message, answer: data });
-            chatHistory.push({ role: 'assistant', content: data, answer: "" });
-            // Simular la escritura de la respuesta del chatbot
-            await simulateTyping(data, chatContent);
-            
-         } catch (error) {
-            console.error('Error:', error);
-            // Manejo de errores
-            var errorMessageDiv = document.createElement('div');
-            errorMessageDiv.className = 'message received';
-            errorMessageDiv.textContent = 'Hubo un error al enviar el mensaje.';
-            chatContent.appendChild(errorMessageDiv);
-            chatContent.scrollTop = chatContent.scrollHeight;
-         }
-
-         // Reactivar el input y el botón de enviar
-         chatInput.disabled = false;
-         document.getElementById('sendButton').disabled = false;
-         spinner.style.display = 'none';
-         chatInput.focus();
-      }
-   }
-
-   function simulateTyping(text, chatContent) {
-      return new Promise((resolve) => {
-         let index = 0;
-         const responseMessageDiv = document.createElement('div');
-         responseMessageDiv.className = 'message received';
-         chatContent.appendChild(responseMessageDiv);
-
-         function typeChar() {
-            if (index < text.length) {
-               responseMessageDiv.textContent += text[index];
-               index++;
-               chatContent.scrollTop = chatContent.scrollHeight;
-               setTimeout(typeChar, 20); // Ajusta la velocidad de escritura aquí
-            } else {
-               // Una vez que termine de escribir el texto, agregar los botones
-               addFeedbackButtons(responseMessageDiv, text);
-               resolve();
-            }
-         }
-
-         typeChar();
-      });
-   }
-
-   // Función para agregar botones de like y dislike
-   function addFeedbackButtons(messageDiv, text) {
-      const buttonsDiv = document.createElement('div');
-      buttonsDiv.className = 'feedback-buttons';
-
-      // Botón Like
-      const likeButton = document.createElement('button');
-      likeButton.className = 'like-button';
-      likeButton.innerHTML = '<i class="fas fa-thumbs-up"></i>';  // FontAwesome like icon
-      likeButton.onclick = () => handleFeedback('like', likeButton, dislikeButton, text);
-
-      // Botón Dislike
-      const dislikeButton = document.createElement('button');
-      dislikeButton.className = 'dislike-button';
-      dislikeButton.innerHTML = '<i class="fas fa-thumbs-down"></i>';  // FontAwesome dislike icon
-      dislikeButton.onclick = () => handleFeedback('dislike', likeButton, dislikeButton, text);
-
-      // Agregar los botones al contenedor
-      buttonsDiv.appendChild(likeButton);
-      buttonsDiv.appendChild(dislikeButton);
-
-      // Agregar el contenedor de botones debajo del mensaje
-      messageDiv.appendChild(buttonsDiv);
-   }
-
-   // Función para manejar el clic en los botones de feedback
-   function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
-      // Buscar el mensaje en el historial basado en la respuesta
-      const chatRecord = chatHistory.find(item => item.answer === message);
-
-      if (chatRecord) {
-         if (feedbackType === 'like') {
-            console.log('Liked message:', message);
-            likeButton.querySelector('i').style.color = 'green';  // Cambiar color del icono Like a verde
-            dislikeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Dislike
-            chatRecord.feedback = 'like';
-         } else if (feedbackType === 'dislike') {
-            console.log('Disliked message:', message);
-            dislikeButton.querySelector('i').style.color = 'red';  // Cambiar color del icono Dislike a rojo
-            likeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Like
-            chatRecord.feedback = 'dislike';
-         }
-
-         // Enviar el feedback al backend
-         sendFeedback(chatRecord);
-      } else {
-         console.error('Message not found in chat history');
-      }
-   }
-
-   async function sendFeedback(feedback) {
-      try {
-         // Enviar feedback a la API
-         const response = await fetch('https://fkcvlolj22.execute-api.us-west-1.amazonaws.com/dev/chat', {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ feedback: feedback })
+      </script>
+      <script>
+         document.getElementById('chatIcon').addEventListener('click', function() {
+          var chatBox = document.getElementById('chatBox');
+          if (chatBox.style.display === 'none' || chatBox.style.display === '') {
+            chatBox.style.display = 'block';
+          } else {
+            chatBox.style.display = 'none';
+          }
          });
-         const data = await response.json();
-         console.log('Feedback guardado:', data);
-      } catch (error) {
-         console.error('Error al enviar feedback:', error);
-      }
-   }
+         document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
+            document.getElementById('chatBox').style.display = 'none';
+         });
+         document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
+            var chatBox = document.getElementById('chatBox');
+            var chatContent = document.getElementById('chatContent');
+            if (chatBox.classList.contains('expanded')) {
+               chatBox.classList.remove('expanded');
+               chatContent.classList.remove('expanded');
+               this.textContent = 'expand_more';
+            } else {
+               chatBox.classList.add('expanded');
+               chatContent.classList.add('expanded');
+               this.textContent = 'expand_less';
+            }
+         });
+         let chatHistory = [];
+         async function sendMessage() {
+            var chatInput = document.getElementById('chatInput');
+            var message = chatInput.value.trim();
+            if (message !== "") {
+            var chatContent = document.getElementById('chatContent');
+            var spinner = document.getElementById('spinner');
+            spinner.style.display = 'block'; // Mostrar spinner
 
-   // Función para generar o recuperar el session_id del visitante
-   function getSessionId() {
-      let sessionId = localStorage.getItem('session_id');
-      if (!sessionId) {
-         sessionId = generateUUID();  // Genera un UUID
-         localStorage.setItem('session_id', sessionId);
-      }
-      return sessionId;
-   }
+            // Añadir el mensaje enviado por el usuario
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message sent';
+            messageDiv.textContent = message;
+            chatContent.appendChild(messageDiv);
+            chatContent.scrollTop = chatContent.scrollHeight;
+            
+            // Limpiar el input y desactivar el envío mientras se espera la respuesta
+            chatInput.value = "";
+            chatInput.disabled = true;
+            document.getElementById('sendButton').disabled = true;
 
-   // Función para generar un UUID
-   function generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-         return v.toString(16);
-      });
-   }
+            // Hacer la solicitud a la API
+            try {
+               const response = await fetch('https://fkcvlolj22.execute-api.us-west-1.amazonaws.com/dev/chat', {
+                  method: 'POST',
+                  headers: {
+                  'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ query: message, messages: chatHistory })
+               });
+               const data = await response.json();
+               // Agregar el mensaje del usuario y la respuesta al historial
+               chatHistory.push({ role: 'user', content: message, answer:data });
+               chatHistory.push({ role: 'assistant', content: data, answer:"" });
+               // Simular la escritura de la respuesta del chatbot
+               await simulateTyping(data, chatContent);
+               
+            } catch (error) {
+               console.error('Error:', error);
+               // Manejo de errores
+               var errorMessageDiv = document.createElement('div');
+               errorMessageDiv.className = 'message received';
+               errorMessageDiv.textContent = 'Hubo un error al enviar el mensaje.';
+               chatContent.appendChild(errorMessageDiv);
+               chatContent.scrollTop = chatContent.scrollHeight;
+            }
 
-   document.getElementById('sendButton').addEventListener('click', sendMessage);
-
-   document.getElementById('chatInput').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-         sendMessage();
-      }
-   });
-
-   $(document).ready(function () {
-      $("#tabla").DataTable({
-         "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-               "sFirst": "Primero",
-               "sLast": "Último",
-               "sNext": "Siguiente",
-               "sPrevious": "Anterior"
-            },
-            "oAria": {
-               "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-               "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            // Reactivar el input y el botón de enviar
+            chatInput.disabled = false;
+            document.getElementById('sendButton').disabled = false;
+            spinner.style.display = 'none';
+            chatInput.focus();
             }
          }
-      });
-   });
+         
+         function simulateTyping(text, chatContent) {
+            return new Promise((resolve) => {
+               let index = 0;
+               const responseMessageDiv = document.createElement('div');
+               responseMessageDiv.className = 'message received';
+               chatContent.appendChild(responseMessageDiv);
 
-   $(document).ready(function () {
-      $("#tabla2").DataTable({
-         "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-               "sFirst": "Primero",
-               "sLast": "Último",
-               "sNext": "Siguiente",
-               "sPrevious": "Anterior"
-            },
-            "oAria": {
-               "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-               "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+               function typeChar() {
+                     if (index < text.length) {
+                        responseMessageDiv.textContent += text[index];
+                        index++;
+                        chatContent.scrollTop = chatContent.scrollHeight;
+                        setTimeout(typeChar, 20); // Ajusta la velocidad de escritura aquí
+                     } else {
+                        // Una vez que termine de escribir el texto, agregar los botones
+                        addFeedbackButtons(responseMessageDiv, text);
+                        resolve();
+                     }
+               }
+
+               typeChar();
+            });
+         }
+
+         // Función para agregar botones de like y dislike
+         function addFeedbackButtons(messageDiv, text) {
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'feedback-buttons';
+
+            // Botón Like
+            const likeButton = document.createElement('button');
+            likeButton.className = 'like-button';
+            likeButton.innerHTML = '<i class="fas fa-thumbs-up"></i>';  // FontAwesome like icon
+            likeButton.onclick = () => handleFeedback('like', likeButton, dislikeButton, text);
+
+            // Botón Dislike
+            const dislikeButton = document.createElement('button');
+            dislikeButton.className = 'dislike-button';
+            dislikeButton.innerHTML = '<i class="fas fa-thumbs-down"></i>';  // FontAwesome dislike icon
+            dislikeButton.onclick = () => handleFeedback('dislike', likeButton, dislikeButton, text);
+
+            // Agregar los botones al contenedor
+            buttonsDiv.appendChild(likeButton);
+            buttonsDiv.appendChild(dislikeButton);
+
+            // Agregar el contenedor de botones debajo del mensaje
+            messageDiv.appendChild(buttonsDiv);
+         }
+
+         // Función para manejar el clic en los botones
+         function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
+            // Buscar el mensaje en el historial basado en la respuesta
+            const chatRecord = chatHistory.find(item => item.answer === message);
+
+            if (chatRecord) {
+               if (feedbackType === 'like') {
+                     console.log('Liked message:', message);
+                     // Cambiar el color del icono de Like a verde y resetear Dislike
+                     likeButton.querySelector('i').style.color = 'green';
+                     dislikeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Dislike
+
+                     // Almacenar el feedback como 'like'
+                     chatRecord.feedback = 'like';
+               } else if (feedbackType === 'dislike') {
+                     console.log('Disliked message:', message);
+                     // Cambiar el color del icono de Dislike a rojo y resetear Like
+                     dislikeButton.querySelector('i').style.color = 'red';
+                     likeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Like
+
+                     // Almacenar el feedback como 'dislike'
+                     chatRecord.feedback = 'dislike';
+               }
+               //sendFeedBack(chatRecord);
+               console.log('Updated chat record:', chatRecord);
+            } else {
+               console.error('Message not found in chat history');
             }
          }
-      });
-   });
-</script>
 
-<script src="../assets/datatable/datatables.js"></script>
-</body>
-</htm
+         async function sendFeedBack(feedback) {
+            // Hacer la solicitud a la API
+            try {
+               const response = await fetch('https://fkcvlolj22.execute-api.us-west-1.amazonaws.com/dev/chat', {
+                  method: 'POST',
+                  headers: {
+                  'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({  feedback: chafeedbacktHistory })
+               });
+               const data = await response.json();
+              
+               
+            } catch (error) {
+               console.error('Error:', error);
+          
+            }
+         }
+         
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+
+        document.getElementById('chatInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+         $(document).ready(function () {
+            $("#tabla").DataTable({
+                "language": {
+         
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+         
+                }
+            });
+         });
+         $(document).ready(function () {
+            $("#tabla2").DataTable({
+                "language": {
+         
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+         
+                }
+            });
+         });
+      </script>
+      <script src="../assets/datatable/datatables.js"></script>
+   </body>
+   </htm
