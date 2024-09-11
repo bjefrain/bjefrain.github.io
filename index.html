@@ -1680,20 +1680,62 @@
    }
 
    // Función para generar o recuperar el session_id del visitante
-   function getSessionId() {
-      let sessionId = localStorage.getItem('session_id');
-      if (!sessionId) {
-         sessionId = generateUUID();  // Genera un UUID
-         localStorage.setItem('session_id', sessionId);
-      }
-      return sessionId;
-   }
+function getSessionId() {
+    let sessionId = localStorage.getItem('session_id');
+    if (!sessionId) {
+        sessionId = generateUUID();  // Genera un UUID si no existe uno
+        localStorage.setItem('session_id', sessionId);
+    }
+    return sessionId;
+}
 
-   // Función para generar un UUID
-   function generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-         return v.toString(16);
+// Función para generar un UUID (identificador único)
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+// Función para enviar feedback (like o dislike)
+function enviarFeedback(tipo, messageId) {
+    const feedback = {
+        feedback: {
+            message_id: messageId,  // ID del mensaje sobre el que se hace feedback
+            feedback_type: tipo,    // Puede ser 'like' o 'dislike'
+            user_id: getSessionId() // Obtener el identificador único de la sesión
+        }
+    };
+
+    // Hacer la solicitud POST a tu API Gateway
+    fetch('https://fkcvlolj22.execute-api.us-west-1.amazonaws.com/dev/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(feedback)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Feedback enviado exitosamente:', data);
+    })
+    .catch((error) => {
+        console.error('Error al enviar feedback:', error);
+    });
+}
+
+// Asignar eventos a los botones de like y dislike dinámicamente según el mensaje
+document.querySelectorAll('.chat-message').forEach(function(messageElement) {
+    const messageId = messageElement.getAttribute('data-message-id'); // Obtener el message_id dinámicamente
+
+    // Vincular el botón de like
+    messageElement.querySelector('.like-button').addEventListener('click', function() {
+        enviarFeedback('like', messageId);
+    });
+
+    // Vincular el botón de dislike
+    messageElement.querySelector('.dislike-button').addEventListener('click', function() {
+        enviarFeedback('dislike', messageId);
       });
    }
 
