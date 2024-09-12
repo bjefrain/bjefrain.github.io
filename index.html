@@ -1565,14 +1565,13 @@
             });
             const data = await response.json();
             // Agregar el mensaje del usuario y la respuesta al historial
-            chatHistory.push({ role: 'user', content: message, answer: data });
-            chatHistory.push({ role: 'assistant', content: data, answer: "" });
+            chatHistory.push({ role: 'user', content: message });
+            chatHistory.push({ role: 'assistant', content: data });
             // Simular la escritura de la respuesta del chatbot
             await simulateTyping(data, chatContent);
             
          } catch (error) {
             console.error('Error:', error);
-            // Manejo de errores
             var errorMessageDiv = document.createElement('div');
             errorMessageDiv.className = 'message received';
             errorMessageDiv.textContent = 'Hubo un error al enviar el mensaje.';
@@ -1580,7 +1579,6 @@
             chatContent.scrollTop = chatContent.scrollHeight;
          }
 
-         // Reactivar el input y el botón de enviar
          chatInput.disabled = false;
          document.getElementById('sendButton').disabled = false;
          spinner.style.display = 'none';
@@ -1600,9 +1598,8 @@
                responseMessageDiv.textContent += text[index];
                index++;
                chatContent.scrollTop = chatContent.scrollHeight;
-               setTimeout(typeChar, 20); // Ajusta la velocidad de escritura aquí
+               setTimeout(typeChar, 20); 
             } else {
-               // Una vez que termine de escribir el texto, agregar los botones
                addFeedbackButtons(responseMessageDiv, text);
                resolve();
             }
@@ -1612,59 +1609,45 @@
       });
    }
 
-   // Función para agregar botones de like y dislike
    function addFeedbackButtons(messageDiv, text) {
       const buttonsDiv = document.createElement('div');
       buttonsDiv.className = 'feedback-buttons';
 
-      // Botón Like
       const likeButton = document.createElement('button');
       likeButton.className = 'like-button';
-      likeButton.innerHTML = '<i class="fas fa-thumbs-up"></i>';  // FontAwesome like icon
+      likeButton.innerHTML = '<i class="fas fa-thumbs-up"></i>';  
       likeButton.onclick = () => handleFeedback('like', likeButton, dislikeButton, text);
 
-      // Botón Dislike
       const dislikeButton = document.createElement('button');
       dislikeButton.className = 'dislike-button';
-      dislikeButton.innerHTML = '<i class="fas fa-thumbs-down"></i>';  // FontAwesome dislike icon
+      dislikeButton.innerHTML = '<i class="fas fa-thumbs-down"></i>';  
       dislikeButton.onclick = () => handleFeedback('dislike', likeButton, dislikeButton, text);
 
-      // Agregar los botones al contenedor
       buttonsDiv.appendChild(likeButton);
       buttonsDiv.appendChild(dislikeButton);
-
-      // Agregar el contenedor de botones debajo del mensaje
       messageDiv.appendChild(buttonsDiv);
    }
 
-   // Función para manejar el clic en los botones de feedback
    function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
-      // Buscar el mensaje en el historial basado en la respuesta
-      const chatRecord = chatHistory.find(item => item.answer === message);
+      const chatRecord = chatHistory.find(item => item.content === message);
 
       if (chatRecord) {
          if (feedbackType === 'like') {
-            console.log('Liked message:', message);
-            likeButton.querySelector('i').style.color = 'green';  // Cambiar color del icono Like a verde
-            dislikeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Dislike
+            likeButton.querySelector('i').style.color = 'green';  
+            dislikeButton.querySelector('i').style.color = '#666';  
             chatRecord.feedback = 'like';
          } else if (feedbackType === 'dislike') {
-            console.log('Disliked message:', message);
-            dislikeButton.querySelector('i').style.color = 'red';  // Cambiar color del icono Dislike a rojo
-            likeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Like
+            dislikeButton.querySelector('i').style.color = 'red';  
+            likeButton.querySelector('i').style.color = '#666';  
             chatRecord.feedback = 'dislike';
          }
 
-         // Enviar el feedback al backend
          sendFeedback(chatRecord);
-      } else {
-         console.error('Message not found in chat history');
       }
    }
 
    async function sendFeedback(feedback) {
       try {
-         // Enviar feedback a la API
          const response = await fetch('https://832ieuhb2i.execute-api.us-west-1.amazonaws.com/dev/chat', {
             method: 'POST',
             headers: {
@@ -1679,17 +1662,15 @@
       }
    }
 
-   // Función para generar o recuperar el session_id del visitante
    function getSessionId() {
       let sessionId = localStorage.getItem('session_id');
       if (!sessionId) {
-         sessionId = generateUUID();  // Genera un UUID
+         sessionId = generateUUID();  
          localStorage.setItem('session_id', sessionId);
       }
       return sessionId;
    }
 
-   // Función para generar un UUID
    function generateUUID() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
          const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
