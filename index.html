@@ -1657,9 +1657,15 @@ function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
          likeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Like
          chatRecord.feedback = 'dislike';
       }
-       // Desactivar los botones después de seleccionar feedback
-      likeButton.disabled = true;
-      dislikeButton.disabled = true;
+       // Desactivar los botones y cambiar el estilo para que refleje el estado deshabilitado
+        likeButton.disabled = true;
+        dislikeButton.disabled = true;
+
+        // Cambiar visualmente el estilo
+        likeButton.style.cursor = 'not-allowed';
+        dislikeButton.style.cursor = 'not-allowed';
+        likeButton.style.opacity = '0.5';
+        dislikeButton.style.opacity = '0.5';
 
       // Preparar el feedback para enviarlo
       const feedback = {
