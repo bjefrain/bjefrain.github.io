@@ -1514,27 +1514,33 @@
       <script>
    document.getElementById('chatIcon').addEventListener('click', function() {
    var chatBox = document.getElementById('chatBox');
+   var chatFooter = document.getElementById('chatFooter');
    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
       chatBox.style.display = 'block';
+      chatFooter.style.display = 'block'; // Asegúrate de que el footer también esté visible
    } else {
       chatBox.style.display = 'none';
+      chatFooter.style.display = 'none'; // Ocultar el footer cuando el chat está oculto
    }
 });
 
 document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
-   document.getElementById('chatBox').style.display = 'none';
+   var chatBox = document.getElementById('chatBox');
+   var chatFooter = document.getElementById('chatFooter');
+   chatBox.style.display = 'none';
+   chatFooter.style.display = 'none'; // Ocultar también el footer
 });
 
 document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
    var chatBox = document.getElementById('chatBox');
    var chatContent = document.getElementById('chatContent');
-   if (chatBox.classList.contains('expanded')) {
-      chatBox.classList.remove('expanded');
-      chatContent.classList.remove('expanded');
+   if (chatBox.style.height === '500px') {
+      chatBox.style.height = '300px';  // Altura cuando no está expandido
+      chatContent.style.height = '250px';
       this.textContent = 'expand_more';
    } else {
-      chatBox.classList.add('expanded');
-      chatContent.classList.add('expanded');
+      chatBox.style.height = '500px';  // Altura cuando está expandido
+      chatContent.style.height = '450px';
       this.textContent = 'expand_less';
    }
 });
