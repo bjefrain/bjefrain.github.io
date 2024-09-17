@@ -1512,7 +1512,20 @@
          
       </script>
       <script>
-   document.getElementById('chatIcon').addEventListener('click', function() {
+   // Variables para almacenar los tamaños originales
+var initialChatBoxHeight;
+var initialChatContentHeight;
+
+window.onload = function() {
+   // Guardar el tamaño original del chatBox y chatContent al cargar la página
+   var chatBox = document.getElementById('chatBox');
+   var chatContent = document.getElementById('chatContent');
+   
+   initialChatBoxHeight = chatBox.offsetHeight + 'px';
+   initialChatContentHeight = chatContent.offsetHeight + 'px';
+};
+
+document.getElementById('chatIcon').addEventListener('click', function() {
    var chatBox = document.getElementById('chatBox');
    var chatFooter = document.getElementById('chatFooter');
    
@@ -1544,9 +1557,9 @@ document.querySelector('#chatHeader .expand-icon').addEventListener('click', fun
       chatContent.classList.remove('expanded');
       this.textContent = 'expand_more';
       
-      // Ajustar el tamaño para contraer el chat
-      chatBox.style.height = '300px';  // Altura normal cuando está contraído
-      chatContent.style.height = '250px';  // Ajusta el contenido cuando el chat se contrae
+      // Restaurar el tamaño original cuando se contrae
+      chatBox.style.height = initialChatBoxHeight;
+      chatContent.style.height = initialChatContentHeight;
    } else {
       chatBox.classList.add('expanded');
       chatContent.classList.add('expanded');
