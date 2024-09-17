@@ -1517,10 +1517,10 @@
    var chatFooter = document.getElementById('chatFooter');
    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
       chatBox.style.display = 'block';
-      chatFooter.style.display = 'block'; // Asegúrate de que el footer también esté visible
+      chatFooter.style.display = 'block'; // Asegurar que el footer también esté visible
    } else {
       chatBox.style.display = 'none';
-      chatFooter.style.display = 'none'; // Ocultar el footer cuando el chat está oculto
+      chatFooter.style.display = 'none'; // Ocultar el footer cuando el chat esté oculto
    }
 });
 
@@ -1528,20 +1528,30 @@ document.querySelector('#chatHeader .close-icon').addEventListener('click', func
    var chatBox = document.getElementById('chatBox');
    var chatFooter = document.getElementById('chatFooter');
    chatBox.style.display = 'none';
-   chatFooter.style.display = 'none'; // Ocultar también el footer
+   chatFooter.style.display = 'none'; // Asegurarse de ocultar también el footer
 });
 
 document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
    var chatBox = document.getElementById('chatBox');
    var chatContent = document.getElementById('chatContent');
-   if (chatBox.style.height === '500px') {
-      chatBox.style.height = '300px';  // Altura cuando no está expandido
-      chatContent.style.height = '250px';
+   var chatFooter = document.getElementById('chatFooter');
+   
+   if (chatBox.classList.contains('expanded')) {
+      chatBox.classList.remove('expanded');
+      chatContent.classList.remove('expanded');
       this.textContent = 'expand_more';
+      
+      // Ajustar el chatFooter para mantenerse en la parte inferior
+      chatFooter.style.position = 'absolute';
+      chatFooter.style.bottom = '0';
    } else {
-      chatBox.style.height = '500px';  // Altura cuando está expandido
-      chatContent.style.height = '450px';
+      chatBox.classList.add('expanded');
+      chatContent.classList.add('expanded');
       this.textContent = 'expand_less';
+      
+      // Asegurar que el chatFooter permanezca en la parte inferior incluso en expansión
+      chatFooter.style.position = 'absolute';
+      chatFooter.style.bottom = '0';
    }
 });
 
