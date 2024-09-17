@@ -213,7 +213,7 @@
          .feedback-buttons i {
             color: #666; /* Color gris para los iconos */
          }
-       </style>
+          </style>
    </head>
    <body class="demo-1" id="bdy">
       <div id="chatIcon">
@@ -224,24 +224,23 @@
             <span class="expand-icon material-icons">expand_more</span>
             Asistente Estudiantil
             <span class="close-icon material-icons">close</span>
-          <div id="chatContent">
+         </div> <!-- Cierre de chatHeader -->
+         <div id="chatContent">
             <div class="message received">Hola, ¿cómo puedo ayudarte?</div>
+         </div> <!-- Cierre de chatContent -->
+      </div> <!-- Cierre de chatBox --> 
+      
+      <div id="chatFooter">
+         <div id="spinner" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+               <span class="sr-only">Loading...</span>
+            </div>
          </div>
-        </div>
-      </div>>
-         
-         <div id="chatFooter">
-            <div id="spinner" style="display: none;">
-               <div class="spinner-border text-primary" role="status">
-                 <span class="sr-only">Loading...</span>
-               </div>
-             </div>
-            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
-            <button id="sendButton">
-              <span class="material-icons">send</span>
-            </button>
-          </div>
-      </div>
+         <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+         <button id="sendButton">
+            <span class="material-icons">send</span>
+         </button>
+      </div> <!-- Cierre de chatFooter -->
       <!-- Start PreLoader
          ============================================= -->
       <div class="se-pre-con2"></div>
