@@ -1515,12 +1515,14 @@
    document.getElementById('chatIcon').addEventListener('click', function() {
    var chatBox = document.getElementById('chatBox');
    var chatFooter = document.getElementById('chatFooter');
+   
+   // Alternar visibilidad del chatBox y chatFooter
    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
       chatBox.style.display = 'block';
-      chatFooter.style.display = 'block'; // Asegurar que el footer también esté visible
+      chatFooter.style.display = 'block'; // Asegurarse de que el footer también sea visible
    } else {
       chatBox.style.display = 'none';
-      chatFooter.style.display = 'none'; // Ocultar el footer cuando el chat esté oculto
+      chatFooter.style.display = 'none'; // Ocultar el footer junto con el chatBox
    }
 });
 
@@ -1528,7 +1530,7 @@ document.querySelector('#chatHeader .close-icon').addEventListener('click', func
    var chatBox = document.getElementById('chatBox');
    var chatFooter = document.getElementById('chatFooter');
    chatBox.style.display = 'none';
-   chatFooter.style.display = 'none'; // Asegurarse de ocultar también el footer
+   chatFooter.style.display = 'none'; // Asegurarse de ocultar el footer también
 });
 
 document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
@@ -1536,24 +1538,32 @@ document.querySelector('#chatHeader .expand-icon').addEventListener('click', fun
    var chatContent = document.getElementById('chatContent');
    var chatFooter = document.getElementById('chatFooter');
    
+   // Alternar entre expandido y contraído
    if (chatBox.classList.contains('expanded')) {
       chatBox.classList.remove('expanded');
       chatContent.classList.remove('expanded');
       this.textContent = 'expand_more';
-      
-      // Ajustar el chatFooter para mantenerse en la parte inferior
-      chatFooter.style.position = 'absolute';
+
+      // Ajustar el chatFooter a una posición fluida
+      chatFooter.style.position = 'relative';
       chatFooter.style.bottom = '0';
+      chatBox.style.height = 'auto';  // Volver el chatBox a tamaño automático
+      chatContent.style.height = 'auto';  // Volver el chatContent a tamaño automático
    } else {
       chatBox.classList.add('expanded');
       chatContent.classList.add('expanded');
       this.textContent = 'expand_less';
       
-      // Asegurar que el chatFooter permanezca en la parte inferior incluso en expansión
-      chatFooter.style.position = 'absolute';
+      // Ajustar el chatFooter para estar al final
+      chatFooter.style.position = 'relative';
       chatFooter.style.bottom = '0';
+      
+      // Asegurarse de que el chatBox y el chatContent se expandan correctamente
+      chatBox.style.height = '500px';  // Ajusta la altura cuando está expandido
+      chatContent.style.height = '450px';  // Ajusta la altura del contenido
    }
 });
+
 
 let chatHistory = [];
 async function sendMessage() {
