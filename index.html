@@ -1542,10 +1542,33 @@ async function sendMessage() {
       var spinner = document.getElementById('spinner');
       spinner.style.display = 'block'; // Mostrar spinner
 
-      // Añadir el mensaje enviado por el usuario
+      // Crear el div para el mensaje enviado por el usuario
       var messageDiv = document.createElement('div');
       messageDiv.className = 'message sent';
-      messageDiv.textContent = message;
+
+      // Crear el contenedor para el avatar y el mensaje
+      var messageContainer = document.createElement('div');
+      messageContainer.className = 'message-container';
+
+      // Agregar el avatar del usuario
+      var userAvatar = document.createElement('img');
+      userAvatar.src = 'ruta_a_avatar_del_usuario';  // Reemplaza con la ruta al avatar del usuario
+      userAvatar.style.width = '40px';
+      userAvatar.style.height = '40px';
+      userAvatar.style.borderRadius = '50%';
+      userAvatar.style.marginRight = '10px';  // Espaciado entre el avatar y el mensaje
+      userAvatar.className = 'avatar';
+
+      // Crear el span para el mensaje del usuario
+      var messageText = document.createElement('span');
+      messageText.textContent = message;
+
+      // Añadir el avatar y el mensaje al contenedor
+      messageContainer.appendChild(userAvatar);
+      messageContainer.appendChild(messageText);
+      messageDiv.appendChild(messageContainer);
+      
+      // Añadir el mensaje al contenido del chat
       chatContent.appendChild(messageDiv);
       chatContent.scrollTop = chatContent.scrollHeight;
       
@@ -1567,6 +1590,7 @@ async function sendMessage() {
          // Agregar el mensaje del usuario y la respuesta al historial
          chatHistory.push({ role: 'user', content: message, answer: data });
          chatHistory.push({ role: 'assistant', content: data, answer: "" });
+         
          // Simular la escritura de la respuesta del chatbot
          await simulateTyping(data, chatContent);
          
@@ -1588,16 +1612,40 @@ async function sendMessage() {
    }
 }
 
+
 function simulateTyping(text, chatContent) {
    return new Promise((resolve) => {
       let index = 0;
+
+      // Crear el div para el mensaje recibido
       const responseMessageDiv = document.createElement('div');
       responseMessageDiv.className = 'message received';
+
+      // Crear el contenedor para el avatar y el mensaje
+      var messageContainer = document.createElement('div');
+      messageContainer.className = 'message-container';
+
+      // Agregar el avatar del chatbot
+      var botAvatar = document.createElement('img');
+      botAvatar.src = 'ruta_a_avatar_del_chatbot';  // Reemplaza con la ruta al avatar del chatbot
+      botAvatar.style.width = '40px';
+      botAvatar.style.height = '40px';
+      botAvatar.style.borderRadius = '50%';
+      botAvatar.style.marginRight = '10px';  // Espaciado entre el avatar y el mensaje
+      botAvatar.className = 'avatar';
+
+      // Crear el span para el mensaje del chatbot
+      var responseText = document.createElement('span');
+
+      // Añadir el avatar y el mensaje al contenedor
+      messageContainer.appendChild(botAvatar);
+      messageContainer.appendChild(responseText);
+      responseMessageDiv.appendChild(messageContainer);
       chatContent.appendChild(responseMessageDiv);
 
       function typeChar() {
          if (index < text.length) {
-            responseMessageDiv.textContent += text[index];
+            responseText.textContent += text[index];
             index++;
             chatContent.scrollTop = chatContent.scrollHeight;
             setTimeout(typeChar, 20); // Ajusta la velocidad de escritura aquí
