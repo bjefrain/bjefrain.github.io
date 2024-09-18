@@ -1617,7 +1617,7 @@ async function sendMessage() {
 
       // Hacer la solicitud a la API
       try {
-         const response = await fetch('https://cl01jfkvlj.execute-api.us-east-1.amazonaws.com/dev/chat', {
+         const response = await fetch('https://my3wfzwdnh.execute-api.us-east-1.amazonaws.com/dev/chat', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json'
@@ -1698,7 +1698,7 @@ function simulateTyping(text, chatContent) {
    });
 }
 
-// Función para agregar botones de like y dislike
+// Función para agregar botones de like, dislike y reportar
 function addFeedbackButtons(messageDiv, text) {
    const buttonsDiv = document.createElement('div');
    buttonsDiv.className = 'feedback-buttons';
@@ -1715,9 +1715,16 @@ function addFeedbackButtons(messageDiv, text) {
    dislikeButton.innerHTML = '<i class="fas fa-thumbs-down"></i>';  // FontAwesome dislike icon
    dislikeButton.onclick = () => handleFeedback('dislike', likeButton, dislikeButton, text);
 
+   // Botón Reportar
+   const reportButton = document.createElement('button');
+   reportButton.className = 'report-button';
+   reportButton.innerHTML = 'Reportar';
+   reportButton.onclick = () => handleReport(text);  // Llamamos a la función handleReport al hacer clic
+
    // Agregar los botones al contenedor
    buttonsDiv.appendChild(likeButton);
    buttonsDiv.appendChild(dislikeButton);
+   buttonsDiv.appendChild(reportButton);
 
    // Agregar el contenedor de botones debajo del mensaje
    messageDiv.appendChild(buttonsDiv);
@@ -1732,38 +1739,105 @@ function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
    const chatRecord = chatHistory.find(item => item.answer === message);
 
    if (chatRecord) {
+      const userMessage = chatRecord.content;  // Obtener el mensaje del usuario
+      const chatbotResponse = chatRecord.answer;  // Obtener la respuesta del chatbot
+
       if (feedbackType === 'like') {
-         console.log('Liked message:', message);
-         likeButton.querySelector('i').style.color = 'green';  // Cambiar color del icono Like a verde
-         dislikeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Dislike
+         likeButton.querySelector('i').style.color = 'green';
+         dislikeButton.querySelector('i').style.color = '#666';
          chatRecord.feedback = 'like';
       } else if (feedbackType === 'dislike') {
-         console.log('Disliked message:', message);
-         dislikeButton.querySelector('i').style.color = 'red';  // Cambiar color del icono Dislike a rojo
-         likeButton.querySelector('i').style.color = '#666';  // Restablecer el color de Like
+         dislikeButton.querySelector('i').style.color = 'red';
+         likeButton.querySelector('i').style.color = '#666';
          chatRecord.feedback = 'dislike';
+         
+         // Enviar tanto el mensaje del usuario como la respuesta del chatbot
+         sendFeedback({
+            message_id: messageId,
+            feedback_type: 'dislike',
+            user_id: getSessionId(),
+            user_message: userMessage,  // Mensaje del usuario
+            chatbot_response: chatbotResponse  // Respuesta del chatbot
+         });
       }
-       // Desactivar los botones y cambiar el estilo para que refleje el estado deshabilitado
-        likeButton.disabled = true;
-        dislikeButton.disabled = true;
 
-        // Cambiar visualmente el estilo
-        likeButton.style.cursor = 'not-allowed';
-        dislikeButton.style.cursor = 'not-allowed';
-        likeButton.style.opacity = '0.5';
-        dislikeButton.style.opacity = '0.5';
+      likeButton.disabled = true;
+      dislikeButton.disabled = true;
+      likeButton.style.cursor = 'not-allowed';
+      dislikeButton.style.cursor = 'not-allowed';
+      likeButton.style.opacity = '0.5';
+      dislikeButton.style.opacity = '0.5';
+   } else {
+      console.error('Message not found in chat history');
+   }
+}
 
-      // Preparar el feedback para enviarlo
-      const feedback = {
-         message_id: messageId,  // Asignar el message_id generado
-         feedback_type: chatRecord.feedback,
+// Función para manejar el reporte
+function handleReport(message) {
+   var chatFooter = document.getElementById('chatFooter');
+   var chatInput = document.getElementById('chatInput');
+   var sendButton = document.getElementById('sendButton');
+
+   // Cambiar el placeholder para indicar que se está escribiendo un reporte
+   chatInput.placeholder = 'Escribe tu reporte aquí...';
+
+   // Activar el campo de input y botón para enviar el reporte
+   chatInput.disabled = false;
+   sendButton.disabled = false;
+
+   // Cambiar el comportamiento del botón de enviar para enviar el reporte
+   sendButton.onclick = async function() {
+      var reportText = chatInput.value.trim();
+      if (reportText !== "") {
+         const chatRecord = chatHistory.find(item => item.answer === message);
+         const messageId = chatRecord ? chatRecord.message_id : generateUUID();  // Reutilizar el mismo message_id
+
+         // Enviar el reporte
+         await sendReport(messageId, message, reportText);
+
+         // Mostrar un mensaje de confirmación
+         var chatContent = document.getElementById('chatContent');
+         var confirmationMessage = document.createElement('div');
+         confirmationMessage.className = 'message confirmation';
+         confirmationMessage.textContent = 'Reporte enviado con éxito. ¡Gracias por tu ayuda!';
+         chatContent.appendChild(confirmationMessage);
+         chatContent.scrollTop = chatContent.scrollHeight;
+
+         // Limpiar el input y desactivar nuevamente el botón
+         chatInput.value = "";
+         chatInput.placeholder = '';
+         sendButton.onclick = sendMessage;  // Restaurar el comportamiento original del botón
+         chatInput.disabled = true;
+         sendButton.disabled = true;
+      }
+   };
+
+   // Centrar el chatFooter en la vista
+   chatFooter.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Función para enviar el reporte al backend
+async function sendReport(messageId, message, reportText) {
+   try {
+      const reportData = {
+         message_id: messageId,  // Reutilizar el mismo message_id del feedback
+         report: reportText,
+         user_message: message,
          user_id: getSessionId()  // Obtener el session_id del visitante
       };
 
-      // Enviar el feedback al backend
-      sendFeedback(feedback);
-   } else {
-      console.error('Message not found in chat history');
+      // Enviar el reporte a la API
+      const response = await fetch('https://my3wfzwdnh.execute-api.us-east-1.amazonaws.com/dev/chat', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ report: reportData })
+      });
+      const data = await response.json();
+      console.log('Reporte guardado:', data);
+   } catch (error) {
+      console.error('Error al enviar el reporte:', error);
    }
 }
 
@@ -1771,7 +1845,7 @@ function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
 async function sendFeedback(feedback) {
    try {
       // Enviar feedback a la API
-      const response = await fetch('https://cl01jfkvlj.execute-api.us-east-1.amazonaws.com/dev/chat', {
+      const response = await fetch('https://my3wfzwdnh.execute-api.us-east-1.amazonaws.com/dev/chat', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
