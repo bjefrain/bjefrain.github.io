@@ -1512,7 +1512,7 @@
          
       </script>
       <script>
-   // Variables para almacenar los tamaños originales
+  // Variables para almacenar los tamaños originales
 var initialChatBoxHeight;
 var initialChatContentHeight;
 
@@ -1798,7 +1798,9 @@ function handleFeedback(feedbackType, likeButton, dislikeButton, reportButton, m
       const feedback = {
          message_id: messageId,
          feedback_type: chatRecord.feedback,
-         user_id: getSessionId()
+         user_id: getSessionId(),
+         user_message: chatRecord.content,  // Agregar mensaje del usuario
+         chatbot_response: message  // Agregar respuesta del chatbot
       };
 
       sendFeedback(feedback);
