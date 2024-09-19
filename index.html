@@ -1512,8 +1512,7 @@
          
       </script>
       <script>
-   // Variables para almacenar los tamaños originales
-        var initialChatBoxHeight;
+      var initialChatBoxHeight;
         var initialChatContentHeight;
 
         window.onload = function() {
@@ -1601,14 +1600,16 @@
                         body: JSON.stringify({ query: message, messages: chatHistory })
                     });
                     const data = await response.json();
-                    chatHistory.push({ role: 'user', content: message, answer: data });
-                    chatHistory.push({ role: 'assistant', content: data, answer: "" });
+                    const messageId = generateUUID();  // Asegurar que el message_id se genere correctamente
+
+                    chatHistory.push({ role: 'user', content: message, answer: data, message_id: messageId });
+                    chatHistory.push({ role: 'assistant', content: data, answer: "", message_id: messageId });
 
                     await simulateTyping(data, chatContent);
 
                     // Enviar los mensajes a DynamoDB como feedback
                     const feedback = {
-                        message_id: generateUUID(),
+                        message_id: messageId,
                         feedback_type: "",  // Aún no se ha dado feedback (like/dislike)
                         user_id: getSessionId(),
                         user_message: message,
@@ -1698,10 +1699,11 @@
         }
 
         function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
-            const messageId = generateUUID();
             const chatRecord = chatHistory.find(item => item.answer === message);
 
             if (chatRecord) {
+                const messageId = chatRecord.message_id;  // Usar el message_id del historial
+
                 if (feedbackType === 'like') {
                     likeButton.querySelector('i').style.color = 'green';
                     dislikeButton.querySelector('i').style.color = '#666';
@@ -1720,7 +1722,7 @@
                 dislikeButton.style.opacity = '0.5';
 
                 const feedback = {
-                    message_id: messageId,
+                    message_id: messageId,  // Asegurar que el message_id correcto se envíe
                     feedback_type: chatRecord.feedback,
                     user_id: getSessionId(),
                     user_message: chatRecord.content,
@@ -1775,8 +1777,10 @@
             const chatRecord = chatHistory.find(item => item.answer === message);
 
             if (chatRecord) {
+                const messageId = chatRecord.message_id;  // Asegurarse de usar el message_id correcto
+
                 const report = {
-                    message_id: chatRecord.message_id,
+                    message_id: messageId,
                     user_id: getSessionId(),
                     report: reportText,
                     user_message: message
