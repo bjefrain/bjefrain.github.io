@@ -1689,7 +1689,7 @@
             const reportButton = document.createElement('button');
             reportButton.className = 'report-button';
             reportButton.innerHTML = '<i class="fas fa-flag"></i>';
-            reportButton.onclick = () => showReportForm(messageDiv, text);
+            reportButton.onclick = () => showReportForm(messageDiv, text, reportButton);
 
             buttonsDiv.appendChild(likeButton);
             buttonsDiv.appendChild(dislikeButton);
@@ -1749,7 +1749,7 @@
             }
         }
 
-        function showReportForm(messageDiv, message) {
+        function showReportForm(messageDiv, message, reportButton) {
             const reportFormDiv = document.createElement('div');
             reportFormDiv.className = 'report-form';
 
@@ -1760,7 +1760,7 @@
             const sendReportButton = document.createElement('button');
             sendReportButton.textContent = 'Enviar reporte';
             sendReportButton.className = 'send-report-button';
-            sendReportButton.onclick = () => submitReport(messageDiv, message, reportTextarea.value);
+            sendReportButton.onclick = () => submitReport(messageDiv, message, reportTextarea.value, reportFormDiv, reportButton);
 
             reportFormDiv.appendChild(reportTextarea);
             reportFormDiv.appendChild(sendReportButton);
@@ -1768,7 +1768,7 @@
             messageDiv.appendChild(reportFormDiv);
         }
 
-        async function submitReport(messageDiv, message, reportText) {
+        async function submitReport(messageDiv, message, reportText, reportFormDiv, reportButton) {
             if (reportText.trim() === '') {
                 alert('El reporte no puede estar vacío.');
                 return;
@@ -1793,8 +1793,19 @@
                         body: JSON.stringify({ report: report })
                     });
                     const data = await response.json();
-                    alert('Reporte enviado exitosamente.');
-                    messageDiv.querySelector('.report-form').remove();
+
+                    // Deshabilitar el botón de reporte
+                    reportButton.disabled = true;
+                    reportButton.style.cursor = 'not-allowed';
+                    reportButton.style.opacity = '0.5';
+
+                    // Mostrar el mensaje de confirmación y ocultar el formulario de reporte
+                    reportFormDiv.innerHTML = '<span style="color: green;">Reporte enviado exitosamente</span>';
+                    
+                    setTimeout(() => {
+                        reportFormDiv.remove();  // Eliminar el mensaje de confirmación después de 3 segundos
+                    }, 3000);
+
                 } catch (error) {
                     console.error('Error al enviar el reporte:', error);
                 }
