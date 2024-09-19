@@ -1556,6 +1556,7 @@
         });
 
         let chatHistory = [];
+
         async function sendMessage() {
             var chatInput = document.getElementById('chatInput');
             var message = chatInput.value.trim();
@@ -1604,6 +1605,18 @@
                     chatHistory.push({ role: 'assistant', content: data, answer: "" });
 
                     await simulateTyping(data, chatContent);
+
+                    // Enviar los mensajes a DynamoDB como feedback
+                    const feedback = {
+                        message_id: generateUUID(),
+                        feedback_type: "",  // Aún no se ha dado feedback (like/dislike)
+                        user_id: getSessionId(),
+                        user_message: message,
+                        chatbot_response: data
+                    };
+
+                    sendFeedback(feedback);
+
                 } catch (error) {
                     var errorMessageDiv = document.createElement('div');
                     errorMessageDiv.className = 'message received';
@@ -1709,7 +1722,9 @@
                 const feedback = {
                     message_id: messageId,
                     feedback_type: chatRecord.feedback,
-                    user_id: getSessionId()
+                    user_id: getSessionId(),
+                    user_message: chatRecord.content,
+                    chatbot_response: chatRecord.answer
                 };
 
                 sendFeedback(feedback);
