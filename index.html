@@ -1512,7 +1512,7 @@
          
       </script>
       <script>
-      var initialChatBoxHeight;
+       var initialChatBoxHeight;
         var initialChatContentHeight;
 
         window.onload = function() {
@@ -1608,10 +1608,10 @@
 
                     await simulateTyping(data, chatContent);
 
-                    // Enviar los mensajes a DynamoDB como feedback
+                    // Enviar los mensajes a DynamoDB como feedback inicial (aunque no se haya dado aún)
                     const feedback = {
                         message_id: messageId,
-                        feedback_type: "",  // Aún no se ha dado feedback (like/dislike)
+                        feedback_type: "",  // Aún no se ha dado feedback
                         user_id: getSessionId(),
                         user_message: message,
                         chatbot_response: data,
@@ -1705,6 +1705,7 @@
 
             if (chatRecord) {
                 const messageId = chatRecord.message_id;  // Usar el message_id del historial
+                const timestamp = chatRecord.timestamp;  // Usar el timestamp del historial
 
                 if (feedbackType === 'like') {
                     likeButton.querySelector('i').style.color = 'green';
@@ -1724,12 +1725,12 @@
                 dislikeButton.style.opacity = '0.5';
 
                 const feedback = {
-                    message_id: messageId,  // Asegurar que el message_id correcto se envíe
+                    message_id: messageId,
+                    timestamp: timestamp,   // Enviar el timestamp también
                     feedback_type: chatRecord.feedback,
                     user_id: getSessionId(),
                     user_message: chatRecord.content,
-                    chatbot_response: chatRecord.answer,
-                    timestamp: chatRecord.timestamp  // Asegurar que el timestamp se envíe en el feedback
+                    chatbot_response: chatRecord.answer
                 };
 
                 sendFeedback(feedback);
@@ -1785,10 +1786,11 @@
 
                 const report = {
                     message_id: messageId,
-                    timestamp: timestamp,  // Incluir el timestamp en el reporte
+                    timestamp: timestamp,
                     user_id: getSessionId(),
                     report: reportText,
-                    user_message: message
+                    user_message: chatRecord.content,
+                    chatbot_response: chatRecord.answer
                 };
 
                 try {
@@ -1799,16 +1801,14 @@
                     });
                     const data = await response.json();
 
-                    // Deshabilitar el botón de reporte
                     reportButton.disabled = true;
                     reportButton.style.cursor = 'not-allowed';
                     reportButton.style.opacity = '0.5';
 
-                    // Mostrar el mensaje de confirmación y ocultar el formulario de reporte
                     reportFormDiv.innerHTML = '<span style="color: green;">Reporte enviado exitosamente</span>';
-                    
+
                     setTimeout(() => {
-                        reportFormDiv.remove();  // Eliminar el mensaje de confirmación después de 3 segundos
+                        reportFormDiv.remove();
                     }, 3000);
 
                 } catch (error) {
@@ -1841,7 +1841,7 @@
                 sendMessage();
             }
         });
-
+         
    $(document).ready(function () {
       $("#tabla").DataTable({
          "language": {
