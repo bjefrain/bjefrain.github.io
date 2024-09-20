@@ -1601,9 +1601,10 @@
                     });
                     const data = await response.json();
                     const messageId = generateUUID();  // Asegurar que el message_id se genere correctamente
+                    const timestamp = Date.now();  // Generar el timestamp para el historial
 
-                    chatHistory.push({ role: 'user', content: message, answer: data, message_id: messageId });
-                    chatHistory.push({ role: 'assistant', content: data, answer: "", message_id: messageId });
+                    chatHistory.push({ role: 'user', content: message, answer: data, message_id: messageId, timestamp: timestamp });
+                    chatHistory.push({ role: 'assistant', content: data, answer: "", message_id: messageId, timestamp: timestamp });
 
                     await simulateTyping(data, chatContent);
 
@@ -1613,7 +1614,8 @@
                         feedback_type: "",  // Aún no se ha dado feedback (like/dislike)
                         user_id: getSessionId(),
                         user_message: message,
-                        chatbot_response: data
+                        chatbot_response: data,
+                        timestamp: timestamp  // Añadir el timestamp al feedback
                     };
 
                     sendFeedback(feedback);
@@ -1726,7 +1728,8 @@
                     feedback_type: chatRecord.feedback,
                     user_id: getSessionId(),
                     user_message: chatRecord.content,
-                    chatbot_response: chatRecord.answer
+                    chatbot_response: chatRecord.answer,
+                    timestamp: chatRecord.timestamp  // Asegurar que el timestamp se envíe en el feedback
                 };
 
                 sendFeedback(feedback);
@@ -1778,9 +1781,11 @@
 
             if (chatRecord) {
                 const messageId = chatRecord.message_id;  // Asegurarse de usar el message_id correcto
+                const timestamp = chatRecord.timestamp;  // Incluir el timestamp correcto
 
                 const report = {
                     message_id: messageId,
+                    timestamp: timestamp,  // Incluir el timestamp en el reporte
                     user_id: getSessionId(),
                     report: reportText,
                     user_message: message
