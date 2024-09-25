@@ -6573,7 +6573,89 @@ header.header.single-head .navbar.in {
     100% { transform: translateX(-2px); }
 }
 
+#chatBox {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 350px;
+    height: 400px;
+    display: none;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
 
+#chatContent {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
 
+.message-container {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    max-width: 80%;
+    word-wrap: break-word;
+}
 
+.message.received .message-container {
+    background-color: #e9f5ff;
+}
+
+.message.sent .message-container {
+    background-color: #d9f7be;
+    text-align: right;
+}
+
+.message.received .avatar {
+    float: left;
+}
+
+.message.sent .avatar {
+    float: right;
+}
+
+.feedback-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.feedback-buttons button {
+    background: none;
+    border: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.like-button i {
+    color: #666;
+}
+
+.dislike-button i {
+    color: #666;
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.send-report-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.send-report-button:hover {
+    background-color: #0056b3;
+}
 
