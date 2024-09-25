@@ -1636,8 +1636,8 @@
         }
 
         function formatResponse(text) {
-            // Convertir listas enumeradas
-            text = text.replace(/(\d+\.)\s/g, '<br>$1&nbsp;');
+            // Convertir listas con guiones y números
+            text = text.replace(/(-\s|\d+\.)/g, '<br>$1&nbsp;');
 
             // Convertir saltos de línea dobles en párrafos
             text = text.replace(/\n\n/g, '</p><p>');
