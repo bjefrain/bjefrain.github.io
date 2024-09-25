@@ -6573,15 +6573,14 @@ header.header.single-head .navbar.in {
     100% { transform: translateX(-2px); }
 }
 
-#chatBox {
-    position: fixed;
-    bottom: 0;
-    right: 20px;
-    width: 350px;
-    height: 400px;
-    display: none;
-    flex-direction: column;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+.message-container p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.message-container {
+    padding: 12px;
+    font-size: 16px;
+    word-break: break-word;
+    white-space: normal;
 }
