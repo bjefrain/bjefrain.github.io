@@ -1636,10 +1636,15 @@
         }
 
         function formatResponse(text) {
+            // Convertir listas enumeradas
+            text = text.replace(/(\d+\.)\s/g, '<br>$1&nbsp;');
+
             // Convertir saltos de línea dobles en párrafos
             text = text.replace(/\n\n/g, '</p><p>');
+
             // Convertir saltos de línea simples en <br>
             text = text.replace(/\n/g, '<br>');
+
             // Devolver el texto como HTML
             return `<p>${text}</p>`;
         }
