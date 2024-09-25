@@ -1579,7 +1579,7 @@
                 userAvatar.className = 'avatar';
 
                 var messageText = document.createElement('span');
-                messageText.textContent = message;
+                messageText.innerHTML = formatResponse(message);  // Formateamos el mensaje
 
                 messageContainer.appendChild(userAvatar);
                 messageContainer.appendChild(messageText);
@@ -1635,6 +1635,15 @@
             }
         }
 
+        function formatResponse(text) {
+            // Convertir saltos de línea dobles en párrafos
+            text = text.replace(/\n\n/g, '</p><p>');
+            // Convertir saltos de línea simples en <br>
+            text = text.replace(/\n/g, '<br>');
+            // Devolver el texto como HTML
+            return `<p>${text}</p>`;
+        }
+
         function simulateTyping(text, chatContent) {
             return new Promise((resolve) => {
                 let index = 0;
@@ -1661,7 +1670,7 @@
 
                 function typeChar() {
                     if (index < text.length) {
-                        responseText.textContent += text[index];
+                        responseText.innerHTML += text[index];
                         index++;
                         chatContent.scrollTop = chatContent.scrollHeight;
                         setTimeout(typeChar, 20);
