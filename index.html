@@ -1636,41 +1636,46 @@
         }
 
         function simulateTyping(text, chatContent) {
-            return new Promise((resolve) => {
-                let index = 0;
-                const responseMessageDiv = document.createElement('div');
-                responseMessageDiv.className = 'message received';
+    return new Promise((resolve) => {
+        let index = 0;
+        const responseMessageDiv = document.createElement('div');
+        responseMessageDiv.className = 'message received';
 
-                var messageContainer = document.createElement('div');
-                messageContainer.className = 'message-container';
+        var messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container';
 
-                var botAvatar = document.createElement('img');
-                botAvatar.src = 'assets/imagen/avatares/chatbot-avatar.png';
-                botAvatar.style.width = '40px';
-                botAvatar.style.height = '40px';
-                botAvatar.style.borderRadius = '50%';
-                botAvatar.style.marginRight = '10px';
-                botAvatar.className = 'avatar';
+        var botAvatar = document.createElement('img');
+        botAvatar.src = 'assets/imagen/avatares/chatbot-avatar.png';
+        botAvatar.style.width = '40px';
+        botAvatar.style.height = '40px';
+        botAvatar.style.borderRadius = '50%';
+        botAvatar.style.marginRight = '10px';
+        botAvatar.className = 'avatar';
 
-                var responseText = document.createElement('span');
+        var responseText = document.createElement('span');
 
-                messageContainer.appendChild(botAvatar);
-                messageContainer.appendChild(responseText);
-                responseMessageDiv.appendChild(messageContainer);
-                chatContent.appendChild(responseMessageDiv);
+        messageContainer.appendChild(botAvatar);
+        messageContainer.appendChild(responseText);
+        responseMessageDiv.appendChild(messageContainer);
+        chatContent.appendChild(responseMessageDiv);
 
-                function typeChar() {
-                    if (index < text.length) {
-                        responseText.innerHTML += text[index];
-                        index++;
-                        chatContent.scrollTop = chatContent.scrollHeight;
-                        setTimeout(typeChar, 20);
-                    } else {
-                        responseText.innerHTML = text;
-                        addFeedbackButtons(responseMessageDiv, text);
-                        resolve();
-                    }
-                }
+        // Parsear el HTML del texto para mostrar progresivamente
+        const parser = new DOMParser();
+        const parsedHTML = parser.parseFromString(text, 'text/html');
+        const htmlContent = parsedHTML.body.innerHTML;
+
+        function typeChar() {
+            // Aquí hacemos una simulación de escritura progresiva con el HTML parseado
+            if (index < htmlContent.length) {
+                responseText.innerHTML += htmlContent[index];  // Añadir los caracteres formateados progresivamente
+                index++;
+                chatContent.scrollTop = chatContent.scrollHeight;  // Mantener scroll abajo
+                setTimeout(typeChar, 20);  // Ajustar la velocidad de simulación
+            } else {
+                addFeedbackButtons(responseMessageDiv, text);  // Añadir los botones de feedback cuando termine
+                resolve();
+            }
+        }
                 typeChar();
             });
         }
