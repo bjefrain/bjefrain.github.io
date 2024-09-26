@@ -1667,7 +1667,7 @@
                 botAvatar.className = 'avatar';
 
                 var responseText = document.createElement('span');
-                  responseText.innerHTML = data;
+                  messageText.innerHTML = formatResponse(message);
 
                 messageContainer.appendChild(botAvatar);
                 messageContainer.appendChild(responseText);
