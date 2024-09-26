@@ -1659,30 +1659,32 @@
         responseMessageDiv.appendChild(messageContainer);
         chatContent.appendChild(responseMessageDiv);
 
-        // 1. Capturar el texto ya formateado y renderizado
-        responseText.innerHTML = text;  // Guardamos el HTML formateado
-        const formattedText = responseText.innerHTML;  // Almacenamos el texto completo
-        responseText.innerHTML = "";  // Limpiar para empezar la simulación desde cero
+        // 1. Capturar el texto formateado completo y asignarlo, pero no mostrarlo aún
+        responseText.innerHTML = text;  // Guardamos el HTML formateado completo
+        const finalText = responseText.innerHTML;  // Guardamos el texto formateado
 
-        // 2. Simulación de escritura progresiva sobre el contenido ya formateado
+        // 2. Limpiamos el innerHTML para iniciar la simulación de escritura
+        responseText.innerHTML = "";
+
+        // 3. Simulación de escritura con el HTML ya formateado
         function typeChar() {
-            if (index < formattedText.length) {
+            if (index < finalText.length) {
                 // Agregar el contenido formateado, carácter por carácter
-                responseText.innerHTML += formattedText[index];
+                responseText.innerHTML += finalText[index];
                 index++;
-                chatContent.scrollTop = chatContent.scrollHeight;  // Mantener el scroll al final
+                chatContent.scrollTop = chatContent.scrollHeight;  // Mantener el scroll abajo
                 setTimeout(typeChar, 20);  // Ajustar la velocidad de la simulación
             } else {
-                // Una vez que termina la simulación, añadir los botones de feedback
-                addFeedbackButtons(responseMessageDiv, formattedText);
+                addFeedbackButtons(responseMessageDiv, finalText);  // Añadir los botones de feedback
                 resolve();
             }
         }
 
-        // 3. Iniciar la simulación de escritura
+        // Iniciar la simulación de escritura
         typeChar();
     });
 }
+
 
 
         function addFeedbackButtons(messageDiv, text) {
