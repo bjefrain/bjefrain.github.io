@@ -1557,7 +1557,12 @@
                 chatContent.style.height = '450px';
             }
         });
-
+         
+         function sendSuggestion(suggestion) {
+            var chatInput = document.getElementById('chatInput');
+            chatInput.value = suggestion;  // Rellenar el input con la sugerencia
+            sendMessage();  // Llamar a la función que envía el mensaje
+         }
         let chatHistory = [];
 
         async function sendMessage() {
