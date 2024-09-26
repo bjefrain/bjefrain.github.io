@@ -6572,15 +6572,3 @@ header.header.single-head .navbar.in {
     75% { transform: translateX(3px); }
     100% { transform: translateX(-2px); }
 }
-
-.message-container p {
-    margin: 10px 0;
-    line-height: 1.6;
-}
-
-.message-container {
-    padding: 12px;
-    font-size: 16px;
-    word-break: break-word;
-    white-space: normal;
-}
