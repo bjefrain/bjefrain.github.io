@@ -1661,7 +1661,7 @@
 
                 function typeChar() {
                     if (index < text.length) {
-                        responseText.textContent += text[index];
+                        responseText.innerHTML += text[index];
                         index++;
                         chatContent.scrollTop = chatContent.scrollHeight;
                         setTimeout(typeChar, 20);
