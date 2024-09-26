@@ -6572,3 +6572,15 @@ header.header.single-head .navbar.in {
     75% { transform: translateX(3px); }
     100% { transform: translateX(-2px); }
 }
+
+#chatBox, #chatContent {
+    transition: height 0.3s ease;
+}
+
+#chatBox.expanded {
+    height: 500px;
+}
+
+#chatContent.expanded {
+    height: 450px;
+}
