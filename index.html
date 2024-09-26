@@ -1662,11 +1662,11 @@
                 function typeChar() {
                     if (index < text.length) {
                         responseText.innerHTML += text[index];
-                        responseText.innerHTML = text;
                         index++;
                         chatContent.scrollTop = chatContent.scrollHeight;
                         setTimeout(typeChar, 20);
                     } else {
+                        responseText.innerHTML = text;
                         addFeedbackButtons(responseMessageDiv, text);
                         resolve();
                     }
