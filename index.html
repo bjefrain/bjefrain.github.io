@@ -1579,7 +1579,7 @@
                 userAvatar.className = 'avatar';
 
                 var messageText = document.createElement('span');
-                messageText.innerHTML = formatResponse(message);  // Formateamos el mensaje
+                messageText.innerHTML = message;  // Formateamos el mensaje
 
                 messageContainer.appendChild(userAvatar);
                 messageContainer.appendChild(messageText);
@@ -1667,6 +1667,7 @@
                 botAvatar.className = 'avatar';
 
                 var responseText = document.createElement('span');
+                  responseText.innerHTML = data;
 
                 messageContainer.appendChild(botAvatar);
                 messageContainer.appendChild(responseText);
