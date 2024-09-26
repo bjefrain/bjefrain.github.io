@@ -1659,21 +1659,20 @@
         responseMessageDiv.appendChild(messageContainer);
         chatContent.appendChild(responseMessageDiv);
 
-        // Usar un contenedor temporal para el HTML para dividirlo en nodos hijos
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = text;
-        const nodes = Array.from(tempDiv.childNodes);  // Convertir los nodos hijos en un array
+        // Guardamos temporalmente el contenido final formateado para aplicarlo después
+        const finalText = text;
 
         function typeChar() {
-            if (index < nodes.length) {
-                // Añadir los nodos uno por uno al contenedor real
-                responseText.appendChild(nodes[index].cloneNode(true));
+            if (index < text.length) {
+                // Simulación de escritura mostrando un carácter a la vez sin aplicar HTML completo
+                responseText.textContent += text[index];
                 index++;
-                chatContent.scrollTop = chatContent.scrollHeight;  // Mantener scroll abajo
-                setTimeout(typeChar, 50);  // Ajustar la velocidad de simulación
+                chatContent.scrollTop = chatContent.scrollHeight;
+                setTimeout(typeChar, 20);  // Ajusta la velocidad si lo necesitas
             } else {
-                // Añadir botones de feedback cuando se termine de simular la escritura
-                addFeedbackButtons(responseMessageDiv, text);
+                // Una vez que se ha escrito todo, aplicar el HTML completo para mantener el formato
+                responseText.innerHTML = finalText;
+                addFeedbackButtons(responseMessageDiv, finalText);  // Añadir los botones de feedback
                 resolve();
             }
         }
@@ -1681,7 +1680,6 @@
         typeChar();
     });
 }
-
 
         function addFeedbackButtons(messageDiv, text) {
             const buttonsDiv = document.createElement('div');
