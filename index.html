@@ -1659,24 +1659,26 @@
         responseMessageDiv.appendChild(messageContainer);
         chatContent.appendChild(responseMessageDiv);
 
-        // Guardamos temporalmente el contenido final formateado para aplicarlo después
+        // 1. Capturar el texto formateado (HTML completo)
         const finalText = text;
 
+        // 2. Simulación de escritura
         function typeChar() {
-            if (index < text.length) {
-                // Simulación de escritura mostrando un carácter a la vez sin aplicar HTML completo
-                responseText.textContent += text[index];
+            if (index < finalText.length) {
+                // Mostrar el texto progresivamente usando textContent o innerHTML (para soportar etiquetas HTML)
+                responseText.innerHTML += finalText[index];
                 index++;
-                chatContent.scrollTop = chatContent.scrollHeight;
-                setTimeout(typeChar, 20);  // Ajusta la velocidad si lo necesitas
+                chatContent.scrollTop = chatContent.scrollHeight;  // Mantener el scroll al final
+                setTimeout(typeChar, 20);  // Ajustar la velocidad de la simulación
             } else {
-                // Una vez que se ha escrito todo, aplicar el HTML completo para mantener el formato
+                // Al final, aplicamos el HTML completo para asegurar que todo se renderice bien
                 responseText.innerHTML = finalText;
                 addFeedbackButtons(responseMessageDiv, finalText);  // Añadir los botones de feedback
                 resolve();
             }
         }
 
+        // 3. Iniciar la simulación de escritura
         typeChar();
     });
 }
