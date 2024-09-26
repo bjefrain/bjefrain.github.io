@@ -1635,45 +1635,53 @@
             }
         }
 
-        function simulateTyping(text, chatContent) {
-            return new Promise((resolve) => {
-                let index = 0;
-                const responseMessageDiv = document.createElement('div');
-                responseMessageDiv.className = 'message received';
+       function simulateTyping(text, chatContent) {
+        return new Promise((resolve) => {
+        let index = 0;
+        const responseMessageDiv = document.createElement('div');
+        responseMessageDiv.className = 'message received';
 
-                var messageContainer = document.createElement('div');
-                messageContainer.className = 'message-container';
+        var messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container';
 
-                var botAvatar = document.createElement('img');
-                botAvatar.src = 'assets/imagen/avatares/chatbot-avatar.png';
-                botAvatar.style.width = '40px';
-                botAvatar.style.height = '40px';
-                botAvatar.style.borderRadius = '50%';
-                botAvatar.style.marginRight = '10px';
-                botAvatar.className = 'avatar';
+        var botAvatar = document.createElement('img');
+        botAvatar.src = 'assets/imagen/avatares/chatbot-avatar.png';
+        botAvatar.style.width = '40px';
+        botAvatar.style.height = '40px';
+        botAvatar.style.borderRadius = '50%';
+        botAvatar.style.marginRight = '10px';
+        botAvatar.className = 'avatar';
 
-                var responseText = document.createElement('span');
+        var responseText = document.createElement('span');
 
-                messageContainer.appendChild(botAvatar);
-                messageContainer.appendChild(responseText);
-                responseMessageDiv.appendChild(messageContainer);
-                chatContent.appendChild(responseMessageDiv);
+        messageContainer.appendChild(botAvatar);
+        messageContainer.appendChild(responseText);
+        responseMessageDiv.appendChild(messageContainer);
+        chatContent.appendChild(responseMessageDiv);
 
-                function typeChar() {
-                    if (index < text.length) {
-                        responseText.innerHTML += text[index];
-                        responseText.innerHTML = text;
-                        index++;
-                        chatContent.scrollTop = chatContent.scrollHeight;
-                        setTimeout(typeChar, 20);
-                    } else {
-                        addFeedbackButtons(responseMessageDiv, text);
-                        resolve();
-                    }
-                }
-                typeChar();
-            });
+        // Usar un contenedor temporal para el HTML para dividirlo en nodos hijos
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = text;
+        const nodes = Array.from(tempDiv.childNodes);  // Convertir los nodos hijos en un array
+
+        function typeChar() {
+            if (index < nodes.length) {
+                // Añadir los nodos uno por uno al contenedor real
+                responseText.appendChild(nodes[index].cloneNode(true));
+                index++;
+                chatContent.scrollTop = chatContent.scrollHeight;  // Mantener scroll abajo
+                setTimeout(typeChar, 50);  // Ajustar la velocidad de simulación
+            } else {
+                // Añadir botones de feedback cuando se termine de simular la escritura
+                addFeedbackButtons(responseMessageDiv, text);
+                resolve();
+            }
         }
+
+        typeChar();
+    });
+}
+
 
         function addFeedbackButtons(messageDiv, text) {
             const buttonsDiv = document.createElement('div');
