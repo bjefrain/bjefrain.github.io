@@ -1628,11 +1628,17 @@
    ;
    
    document.getElementById('chatIcon').addEventListener('click', function() {
-         var chatBox=document.getElementById('chatBox');
-         var chatFooter=document.getElementById('chatFooter');
-         chatBox.style.display=chatBox.style.display==='none' || chatBox.style.display==='' ? 'block' : 'none';
-         chatFooter.style.display=chatBox.style.display;
-      });
+    var chatBox = document.getElementById('chatBox');
+    var chatFooter = document.getElementById('chatFooter');
+
+    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
+        chatBox.style.display = 'block'; // Mostrar el chat
+        chatFooter.style.display = 'flex'; // Mostrar el pie del chat
+    } else {
+        chatBox.style.display = 'none'; // Ocultar el chat
+        chatFooter.style.display = 'none'; // Ocultar el pie del chat
+    }
+});
    
    document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
          var chatBox=document.getElementById('chatBox');
