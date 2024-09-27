@@ -6573,73 +6573,30 @@ header.header.single-head .navbar.in {
     100% { transform: translateX(-2px); }
 }
 
+#chatFooter {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+}
+
 #chatBox {
-   position: relative;
-   height: 400px;
-   width: 300px;
-   display: none;
-   /* Oculto por defecto */
-   background-color: #f1f1f1;
-   border: 1px solid #ccc;
-   border-radius: 10px;
+    position: relative;
+    height: 400px; /* Altura inicial */
+    display: none; /* Oculto por defecto */
 }
 
 #chatBox.expanded {
-   height: 500px;
-   /* Altura cuando se expande */
+    height: 500px; /* Altura cuando se expande */
 }
 
 #chatContent {
-   height: calc(100% - 60px);
-   /* Resta el footer */
-   overflow-y: auto;
-}
-
-#chatFooter {
-   position: absolute;
-   bottom: 0;
-   width: 100%;
-   background-color: #fff;
-   padding: 10px;
-   display: flex;
-   align-items: center;
-   /* Alinear elementos verticalmente */
-}
-
-#chatFooter input[type="text"] {
-   flex-grow: 1;
-   /* Para que el campo de texto ocupe el espacio disponible */
-   padding: 10px;
-   border-radius: 5px;
-   border: 1px solid #ccc;
-   margin-right: 10px;
-   /* Espacio entre el input y el botón */
+    height: calc(100% - 60px); /* Ajusta el contenido para dejar espacio para el footer */
+    overflow-y: auto;
 }
 
 #sendButton {
-   background-color: #007bff;
-   color: #fff;
-   border: none;
-   padding: 10px 15px;
-   border-radius: 5px;
-   cursor: pointer;
-}
-
-#sendButton:hover {
-   background-color: #0056b3;
-}
-
-/* Iconos de expandir/cerrar */
-.expand-icon {
-   cursor: pointer;
-   font-size: 20px;
-   float: right;
-   padding: 10px;
-}
-
-.close-icon {
-   cursor: pointer;
-   font-size: 20px;
-   float: left;
-   padding: 10px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }
