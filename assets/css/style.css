@@ -6572,3 +6572,28 @@ header.header.single-head .navbar.in {
     75% { transform: translateX(3px); }
     100% { transform: translateX(-2px); }
 }
+
+#chatBox {
+    position: fixed; /* o absolute según lo necesites */
+    bottom: 0;
+    right: 0;
+    width: 300px; /* Ajusta según lo necesario */
+    max-height: 80%; /* Controla la altura máxima */
+    display: none; /* Inicialmente oculto */
+    overflow: hidden; /* Para evitar el desbordamiento */
+    transition: all 0.3s ease; /* Transiciones suaves */
+}
+
+#chatContent {
+    overflow-y: auto; /* Para permitir el desplazamiento */
+    flex-grow: 1; /* Para que el contenido tome el espacio disponible */
+}
+
+#chatFooter {
+    display: flex; /* Asegúrate de que se mantenga en una fila */
+    align-items: center; /* Alinear verticalmente */
+    padding: 10px; /* Espaciado alrededor */
+    background-color: #f1f1f1; /* Color de fondo para distinguir */
+}
+
+
