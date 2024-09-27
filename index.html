@@ -1628,27 +1628,18 @@
    ;
    
    document.getElementById('chatIcon').addEventListener('click', function() {
-    var chatBox = document.getElementById('chatBox');
-    var chatFooter = document.getElementById('chatFooter');
-
-    chatBox.style.display = (chatBox.style.display === 'none' || chatBox.style.display === '') ? 'block' : 'none';
-    chatFooter.style.display = chatBox.style.display;
-
-    // Asegurar que el footer mantiene su tamaño y no empuje el botón al abrir
-    chatFooter.style.height = 'auto'; // Asegurar el tamaño correcto del footer
-});
+         var chatBox=document.getElementById('chatBox');
+         var chatFooter=document.getElementById('chatFooter');
+         chatBox.style.display=chatBox.style.display==='none' || chatBox.style.display==='' ? 'block' : 'none';
+         chatFooter.style.display=chatBox.style.display;
+      });
    
    document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
-    var chatBox = document.getElementById('chatBox');
-    var chatFooter = document.getElementById('chatFooter');
-
-    chatBox.style.display = 'none';
-    chatFooter.style.display = 'none';
-
-    // Restaurar el tamaño original del footer cuando se cierra el chat
-    chatFooter.style.height = 'auto'; // Asegurarte que el footer mantenga su tamaño al cerrar
-});
-
+         var chatBox=document.getElementById('chatBox');
+         var chatFooter=document.getElementById('chatFooter');
+         chatBox.style.display='none';
+         chatFooter.style.display='none';
+      });
    
    document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
          var chatBox=document.getElementById('chatBox');
