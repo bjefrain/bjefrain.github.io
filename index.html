@@ -1615,71 +1615,47 @@
    </script>
    <script>
       // Variables para guardar las alturas iniciales
-      let initialChatBoxHeight;
-      let initialChatContentHeight;
+      var initialChatBoxHeight;
+        var initialChatContentHeight;
 
-      window.onload = function () {
-         const chatBox = document.getElementById('chatBox');
-         const chatContent = document.getElementById('chatContent');
-
-         // Guardar las alturas iniciales sólo si el chat está visible al cargar la página
-         if (chatBox.style.display !== 'none') {
+        window.onload = function() {
+            var chatBox = document.getElementById('chatBox');
+            var chatContent = document.getElementById('chatContent');
             initialChatBoxHeight = chatBox.offsetHeight + 'px';
             initialChatContentHeight = chatContent.offsetHeight + 'px';
-         }
-      };
+        };
 
-      // Evento para abrir/cerrar el chat cuando se hace clic en el icono del chat
-      document.getElementById('chatIcon').addEventListener('click', function () {
-         const chatBox = document.getElementById('chatBox');
-         const chatFooter = document.getElementById('chatFooter');
+        document.getElementById('chatIcon').addEventListener('click', function() {
+            var chatBox = document.getElementById('chatBox');
+            var chatFooter = document.getElementById('chatFooter');
+            chatBox.style.display = chatBox.style.display === 'none' || chatBox.style.display === '' ? 'block' : 'none';
+            chatFooter.style.display = chatBox.style.display;
+        });
 
-         // Alternar entre mostrar y ocultar el chat
-         if (chatBox.style.display === 'none' || chatBox.style.display === '') {
-            chatBox.style.display = 'block';
-            chatFooter.style.display = 'block';
-         } else {
+        document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
+            var chatBox = document.getElementById('chatBox');
+            var chatFooter = document.getElementById('chatFooter');
             chatBox.style.display = 'none';
             chatFooter.style.display = 'none';
-         }
-      });
+        });
 
-      // Evento para cerrar el chat cuando se hace clic en el icono de cerrar
-      document.querySelector('#chatHeader .close-icon').addEventListener('click', function () {
-         const chatBox = document.getElementById('chatBox');
-         const chatFooter = document.getElementById('chatFooter');
-
-         // Ocultar el chat
-         chatBox.style.display = 'none';
-         chatFooter.style.display = 'none';
-      });
-
-      // Evento para expandir/restaurar el tamaño del chat cuando se hace clic en el icono de expandir
-      document.querySelector('#chatHeader .expand-icon').addEventListener('click', function () {
-         const chatBox = document.getElementById('chatBox');
-         const chatContent = document.getElementById('chatContent');
-
-         // Alternar entre expandir y restaurar el tamaño del chat
-         if (chatBox.classList.contains('expanded')) {
-            chatBox.classList.remove('expanded');
-            chatContent.classList.remove('expanded');
-            this.textContent = '⤢';
-
-            // Restaurar las alturas iniciales
-            if (initialChatBoxHeight && initialChatContentHeight) {
-               chatBox.style.height = initialChatBoxHeight;
-               chatContent.style.height = initialChatContentHeight;
+        document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
+            var chatBox = document.getElementById('chatBox');
+            var chatContent = document.getElementById('chatContent');
+            if (chatBox.classList.contains('expanded')) {
+                chatBox.classList.remove('expanded');
+                chatContent.classList.remove('expanded');
+                this.textContent = 'expand_more';
+                chatBox.style.height = initialChatBoxHeight;
+                chatContent.style.height = initialChatContentHeight;
+            } else {
+                chatBox.classList.add('expanded');
+                chatContent.classList.add('expanded');
+                this.textContent = 'expand_less';
+                chatBox.style.height = '500px';
+                chatContent.style.height = '450px';
             }
-         } else {
-            chatBox.classList.add('expanded');
-            chatContent.classList.add('expanded');
-            this.textContent = '⤡';
-
-            // Establecer alturas específicas para el estado expandido
-            chatBox.style.height = '500px';
-            chatContent.style.height = '450px';
-         }
-      });
+        });
 
       let chatHistory = [];
 
