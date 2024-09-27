@@ -1912,8 +1912,13 @@
    }
    
    function showReportForm(messageDiv, message, reportButton) {
-      const reportFormDiv=document.createElement('div');
-      reportFormDiv.className='report-form';
+    // Comprobar si el cuadro de reporte ya existe
+    const existingReportForm = messageDiv.querySelector('.report-form');
+    if (existingReportForm) {
+        // Si existe, ocultarlo
+        existingReportForm.remove();
+        return; // Salir de la función
+    }
    
       const reportTextarea=document.createElement('textarea');
       reportTextarea.placeholder='Escribe tu reporte aquí...';
