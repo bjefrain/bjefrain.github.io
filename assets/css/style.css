@@ -6573,27 +6573,33 @@ header.header.single-head .navbar.in {
     100% { transform: translateX(-2px); }
 }
 
-#chatBox {
-    position: fixed; /* o absolute según lo necesites */
+@chatBox {
+    position: fixed; 
     bottom: 0;
     right: 0;
-    width: 300px; /* Ajusta según lo necesario */
-    max-height: 80%; /* Controla la altura máxima */
-    display: none; /* Inicialmente oculto */
-    overflow: hidden; /* Para evitar el desbordamiento */
-    transition: all 0.3s ease; /* Transiciones suaves */
+    width: 300px; 
+    max-height: 80%; 
+    display: none; 
+    overflow: hidden; 
+    transition: all 0.3s ease; 
+    background-color: #fff; 
+    border: 1px solid #ccc; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    flex-direction: column; /* Asegurarse de que los hijos se apilen verticalmente */
 }
 
-#chatContent {
-    overflow-y: auto; /* Para permitir el desplazamiento */
-    flex-grow: 1; /* Para que el contenido tome el espacio disponible */
+@chatContent {
+    flex-grow: 1; /* Permite que chatContent crezca y ocupe el espacio disponible */
+    overflow-y: auto; /* Permitir desplazamiento */
 }
 
-#chatFooter {
-    display: flex; /* Asegúrate de que se mantenga en una fila */
-    align-items: center; /* Alinear verticalmente */
-    padding: 10px; /* Espaciado alrededor */
-    background-color: #f1f1f1; /* Color de fondo para distinguir */
+@chatFooter {
+    display: flex; 
+    align-items: center; 
+    padding: 10px; 
+    background-color: #f1f1f1; 
+    /* No se necesita margin o padding adicional en la parte inferior */
 }
 
 
