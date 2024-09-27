@@ -1912,23 +1912,36 @@
    }
    
    function showReportForm(messageDiv, message, reportButton) {
-      const reportFormDiv=document.createElement('div');
-      reportFormDiv.className='report-form';
-   
-      const reportTextarea=document.createElement('textarea');
-      reportTextarea.placeholder='Escribe tu reporte aquí...';
-      reportTextarea.className='report-textarea';
-   
-      const sendReportButton=document.createElement('button');
-      sendReportButton.textContent='Enviar reporte';
-      sendReportButton.className='send-report-button';
-      sendReportButton.onclick=()=>submitReport(messageDiv, message, reportTextarea.value, reportFormDiv, reportButton);
-   
-      reportFormDiv.appendChild(reportTextarea);
-      reportFormDiv.appendChild(sendReportButton);
-   
-      messageDiv.appendChild(reportFormDiv);
-   }
+    // Verificar si el formulario de reporte ya existe
+    let existingReportForm = messageDiv.querySelector('.report-form');
+    
+    // Si ya existe, eliminarlo para evitar duplicados
+    if (existingReportForm) {
+        existingReportForm.remove();
+        reportButton.style.color = ''; // Restablecer el color del botón
+    } else {
+        // Crear y mostrar el formulario de reporte
+        const reportFormDiv = document.createElement('div');
+        reportFormDiv.className = 'report-form';
+    
+        const reportTextarea = document.createElement('textarea');
+        reportTextarea.placeholder = 'Escribe tu reporte aquí...';
+        reportTextarea.className = 'report-textarea';
+    
+        const sendReportButton = document.createElement('button');
+        sendReportButton.textContent = 'Enviar reporte';
+        sendReportButton.className = 'send-report-button';
+        sendReportButton.onclick = () => submitReport(messageDiv, message, reportTextarea.value, reportFormDiv, reportButton);
+    
+        reportFormDiv.appendChild(reportTextarea);
+        reportFormDiv.appendChild(sendReportButton);
+    
+        messageDiv.appendChild(reportFormDiv);
+        
+        // Cambiar el color del botón al abrir el formulario (opcional)
+        reportButton.style.color = 'orange'; 
+    }
+}
    
    async function submitReport(messageDiv, message, reportText, reportFormDiv, reportButton) {
       if (reportText.trim()==='') {
