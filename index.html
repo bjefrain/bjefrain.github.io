@@ -135,7 +135,7 @@
             align-self: flex-start;
             margin-right: auto;
         }
-
+        
         #chatFooter {
             padding: 10px;
             display: flex;
@@ -241,18 +241,38 @@
             max-height: 70%;
          }
       }
+      #suggestions {
+         padding: 10px;
+         display: flex;
+         flex-direction: column;
+         gap: 10px;
+         margin-bottom: 10px;
+         max-height: 150px;
+         overflow-y: auto;
+      }
+
       .suggestion-button {
          background-color: #f1f1f1;
-         border: 1px solid #007bff;
-         border-radius: 5px;
-         padding: 5px 10px;
-         margin: 5px;
+         border: 2px solid #007bff;
+         border-radius: 10px;
+         padding: 10px 15px;
          cursor: pointer;
+         transition: background-color 0.3s, box-shadow 0.3s;
+         text-align: left;
+         font-size: 14px;
+         color: #333;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
       .suggestion-button:hover {
          background-color: #007bff;
          color: white;
+         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .suggestion-button:focus {
+         outline: none;
+         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       }
     </style>
 </head>
@@ -1722,23 +1742,25 @@
    setInterval(cycleExamplePrompts, 5000);
 
    function displaySuggestions() {
-      const suggestionsDiv = document.getElementById('suggestions');
-      suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
-      
-      examplePrompts.forEach((prompt) => {
-         const suggestionButton = document.createElement('button');
-         suggestionButton.textContent = prompt;
-         suggestionButton.classList.add('suggestion-button');
-         
-         // Al hacer clic, copiar el ejemplo al área de texto
-         suggestionButton.addEventListener('click', function() {
-               const chatInput = document.getElementById('chatInput');
-               chatInput.value = prompt;
-         });
-         
-         suggestionsDiv.appendChild(suggestionButton);
-      });
-   }
+    const suggestionsDiv = document.getElementById('suggestions');
+    suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
+    
+    examplePrompts.forEach((prompt) => {
+        const suggestionButton = document.createElement('button');
+        suggestionButton.textContent = prompt;
+        suggestionButton.classList.add('suggestion-button');
+        
+        // Al hacer clic, copiar el ejemplo al área de texto y enviar el mensaje
+        suggestionButton.addEventListener('click', function() {
+            const chatInput = document.getElementById('chatInput');
+            chatInput.value = prompt;
+            //sendMessage(); // Enviar el mensaje de inmediato
+        });
+        
+        suggestionsDiv.appendChild(suggestionButton);
+    });
+}
+
 
    displaySuggestions(); // Llamar la función para mostrar las sugerencias
 
