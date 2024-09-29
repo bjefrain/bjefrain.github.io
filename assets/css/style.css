@@ -6601,5 +6601,31 @@ header.header.single-head .navbar.in {
     background-color: #f1f1f1; 
     /* No se necesita margin o padding adicional en la parte inferior */
 }
+/* Estilos base para el chatBox y suggestionsDiv */
+#chatBox {
+    transition: height 0.3s ease;
+    overflow: hidden;
+}
 
+#suggestions {
+    max-height: 0;
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+}
 
+#suggestions.visible {
+    max-height: 150px;
+}
+
+#chatBox {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 300px;
+    max-height: 500px;
+    transition: all 0.3s ease;
+}
+
+#chatBox.hidden {
+    display: none;
+}
