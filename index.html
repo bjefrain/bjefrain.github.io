@@ -1787,7 +1787,14 @@
         suggestionButton.addEventListener('click', function() {
             const chatInput = document.getElementById('chatInput');
             chatInput.value = prompt;
-            //sendMessage(); // Enviar el mensaje de inmediato
+            sendMessage(); // Enviar el mensaje inmediatamente
+
+            // Ocultar sugerencias automáticamente después de seleccionar una
+            suggestionsDiv.classList.remove('visible');
+            suggestionsDiv.style.maxHeight = '0';
+
+            const toggleIcon = document.getElementById('toggleSuggestions').querySelector('.material-icons');
+            toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
         });
         
         suggestionsDiv.appendChild(suggestionButton);
