@@ -1805,93 +1805,143 @@
         // Ocultar sugerencias
         suggestionsDiv.classList.remove('visible');
         suggestionsDiv.style.maxHeight = '0';
-        suggestionsDiv.style.overflow = 'hidden';
         toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
-        chatContent.classList.remove('disabled'); // Habilitar el chat
+        chatContent.classList.remove('hidden'); // Mostrar el contenido del chat
     } else {
         // Mostrar sugerencias
         suggestionsDiv.classList.add('visible');
-        suggestionsDiv.style.maxHeight = '150px'; // Ajustar la altura según sea necesario
-        suggestionsDiv.style.transition = 'max-height 0.5s ease-in-out'; // Transición suave
+        suggestionsDiv.style.maxHeight = '150px'; // Ajustar la altura de las sugerencias
         toggleIcon.textContent = 'expand_less'; // Cambiar el icono a contraer
-        chatContent.classList.add('disabled'); // Deshabilitar el chat mientras las sugerencias están visibles
+        chatContent.classList.add('hidden'); // Ocultar el contenido del chat
     }
 });
 
-// Después de enviar un mensaje o seleccionar una sugerencia, habilitar el chat
-function sendMessage() {
-    // Código para enviar el mensaje...
+// Después de seleccionar una sugerencia, ocultar las sugerencias y mostrar el chat
+function sendSuggestion(suggestion) {
+    var chatInput = document.getElementById('chatInput');
+    chatInput.value = suggestion; // Rellenar el input con la sugerencia
     
-    // Habilitar el chat después de que se envíe el mensaje
+    // Simular el envío del mensaje
+    sendMessage();
+    
+    // Cerrar automáticamente las sugerencias y mostrar el chat
+    const suggestionsDiv = document.getElementById('suggestions');
     const chatContent = document.getElementById('chatContent');
-    chatContent.classList.remove('disabled');
-}   
-   displaySuggestions(); // Llamar la función para mostrar las sugerencias
+    const toggleIcon = document.getElementById('toggleSuggestions').querySelector('.material-icons');
+    
+    suggestionsDiv.classList.remove('visible');
+    suggestionsDiv.style.maxHeight = '0';
+    toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
+    chatContent.classList.remove('hidden'); // Mostrar el contenido del chat
+}
 
    let chatHistory=[];
    
    async function sendMessage() {
-      var chatInput=document.getElementById('chatInput');
-      var message=chatInput.value.trim();
-   
-      if (message !=="") {
-         var chatContent=document.getElementById('chatContent');
-         var spinner=document.getElementById('spinner');
-         spinner.style.display='block';
-   
-         var messageDiv=document.createElement('div');
-         messageDiv.className='message sent';
-   
-         var messageContainer=document.createElement('div');
-         messageContainer.className='message-container';
-   
-         var userAvatar=document.createElement('img');
-         userAvatar.src='assets/imagen/avatares/user-avatar.png';
-         userAvatar.style.width='30px';
-         userAvatar.style.height='30px';
-         userAvatar.style.borderRadius='50%';
-         userAvatar.style.marginRight='10px';
-         userAvatar.className='avatar';
-   
-         var messageText=document.createElement('span');
-         messageText.textContent=message;
-   
-         messageContainer.appendChild(userAvatar);
-         messageContainer.appendChild(messageText);
-         messageDiv.appendChild(messageContainer);
-         chatContent.appendChild(messageDiv);
-         chatContent.scrollTop=chatContent.scrollHeight;
-   
-         chatInput.value="";
-         chatInput.disabled=true;
-         document.getElementById('sendButton').disabled=true;
-   
-         try {
-            const response=await fetch('https://skhlivck46.execute-api.us-west-1.amazonaws.com/dev/chat', {
-   
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json'
-               }
-   
-               ,
-               body: JSON.stringify({
-                  query: message, messages: chatHistory
-               })
-         });
-      const data=await response.json();
-      const messageId=generateUUID(); // Asegurar que el message_id se genere correctamente
-      const timestamp=Date.now(); // Generar el timestamp para el historial
-   
-      chatHistory.push({
-         role: 'user', content: message, answer: data, message_id: messageId, timestamp: timestamp
-      });
-   
-   chatHistory.push({
-      role: 'assistant', content: data, answer: "", message_id: messageId, timestamp: timestamp
-   });
-   
-   await simulateTyping(data, chatContent);
+    var chatInput = document.getElementById('chatInput');
+    var message = chatInput.value.trim();
+
+    if (message !== "") {
+        var chatContent = document.getElementById('chatContent');
+        var spinner = document.getElementById('spinner');
+        spinner.style.display = 'block'; // Mostrar spinner
+
+        // Crear y agregar el mensaje del usuario en el chat
+        var messageDiv = document.createElement('div');
+        messageDiv.className = 'message sent';
+
+        var messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container';
+
+        var userAvatar = document.createElement('img');
+        userAvatar.src = 'assets/imagen/avatares/user-avatar.png';
+        userAvatar.style.width = '30px';
+        userAvatar.style.height = '30px';
+        userAvatar.style.borderRadius = '50%';
+        userAvatar.style.marginRight = '10px';
+        userAvatar.className = 'avatar';
+
+        var messageText = document.createElement('span');
+        messageText.textContent = message;
+
+        messageContainer.appendChild(userAvatar);
+        messageContainer.appendChild(messageText);
+        messageDiv.appendChild(messageContainer);
+        chatContent.appendChild(messageDiv);
+        chatContent.scrollTop = chatContent.scrollHeight; // Desplazar el scroll al final
+
+        // Limpiar el campo de entrada después de enviar
+        chatInput.value = "";
+        chatInput.disabled = true;
+        document.getElementById('sendButton').disabled = true;
+
+        try {
+            const response = await fetch('https://skhlivck46.execute-api.us-west-1.amazonaws.com/dev/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: message,
+                    messages: chatHistory
+                })
+            });
+
+            const data = await response.json();
+            const messageId = generateUUID(); // Generar un ID único
+            const timestamp = Date.now(); // Generar timestamp
+
+            // Guardar el mensaje del usuario en el historial
+            chatHistory.push({
+                role: 'user',
+                content: message,
+                answer: data,
+                message_id: messageId,
+                timestamp: timestamp
+            });
+
+            // Guardar la respuesta del asistente en el historial
+            chatHistory.push({
+                role: 'assistant',
+                content: data,
+                answer: "",
+                message_id: messageId,
+                timestamp: timestamp
+            });
+
+            // Simular la respuesta del chatbot
+            await simulateTyping(data, chatContent);
+
+            // Habilitar nuevamente el input y el botón de envío después de la respuesta
+            chatInput.disabled = false;
+            document.getElementById('sendButton').disabled = false;
+            chatInput.focus();
+
+        } catch (error) {
+            // Mostrar mensaje de error si ocurre algún problema
+            var errorMessageDiv = document.createElement('div');
+            errorMessageDiv.className = 'message received';
+            errorMessageDiv.textContent = 'Hubo un error al enviar el mensaje.';
+            chatContent.appendChild(errorMessageDiv);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }
+
+        spinner.style.display = 'none'; // Ocultar el spinner
+
+        // Habilitar nuevamente el chatContent y esconder las sugerencias
+        const suggestionsDiv = document.getElementById('suggestions');
+        const toggleIcon = document.getElementById('toggleSuggestions').querySelector('.material-icons');
+
+        suggestionsDiv.classList.remove('visible');
+        suggestionsDiv.style.maxHeight = '0';
+        toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
+        chatContent.classList.remove('hidden'); // Mostrar el contenido del chat
+
+        // Resetear el estado del input y botón después del envío
+        chatInput.disabled = false;
+        document.getElementById('sendButton').disabled = false;
+    }
+}
    
    // Enviar los mensajes a DynamoDB como feedback inicial (aunque no se haya dado aún)
    const feedback= {
