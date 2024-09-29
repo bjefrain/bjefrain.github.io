@@ -1807,18 +1807,25 @@
         suggestionsDiv.style.maxHeight = '0';
         suggestionsDiv.style.overflow = 'hidden';
         toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
-        chatContent.style.maxHeight = 'calc(100% - 60px)'; // Ajustar altura del contenido
+        chatContent.classList.remove('disabled'); // Habilitar el chat
     } else {
         // Mostrar sugerencias
         suggestionsDiv.classList.add('visible');
-        suggestionsDiv.style.maxHeight = '150px'; // La altura máxima de las sugerencias
+        suggestionsDiv.style.maxHeight = '150px'; // Ajustar la altura según sea necesario
         suggestionsDiv.style.transition = 'max-height 0.5s ease-in-out'; // Transición suave
         toggleIcon.textContent = 'expand_less'; // Cambiar el icono a contraer
-        chatContent.style.maxHeight = 'calc(100% - 210px)'; // Ajustar la altura para dejar espacio a las sugerencias
-        chatContent.scrollTop = chatContent.scrollHeight; // Asegurar que el contenido del chat esté al final
+        chatContent.classList.add('disabled'); // Deshabilitar el chat mientras las sugerencias están visibles
     }
-   });
-   
+});
+
+// Después de enviar un mensaje o seleccionar una sugerencia, habilitar el chat
+function sendMessage() {
+    // Código para enviar el mensaje...
+    
+    // Habilitar el chat después de que se envíe el mensaje
+    const chatContent = document.getElementById('chatContent');
+    chatContent.classList.remove('disabled');
+}   
    displaySuggestions(); // Llamar la función para mostrar las sugerencias
 
    let chatHistory=[];
