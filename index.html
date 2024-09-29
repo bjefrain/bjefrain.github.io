@@ -1944,7 +1944,7 @@ function showReportForm(messageDiv, message, reportButton) {
     
         const sendReportButton = document.createElement('button');
         sendReportButton.textContent = 'Enviar reporte';
-        sendReportButton.className = 'btn btn-primary'; // Clases de Bootstrap para el botón (btn y btn-primary)
+        sendReportButton.className = 'btn btn-primary send-report-button'; // Clases de Bootstrap para el botón (btn y btn-primary)
         sendReportButton.onclick = () => submitReport(messageDiv, message, reportTextarea.value, reportFormDiv, reportButton);
     
         reportFormDiv.appendChild(reportTextarea);
