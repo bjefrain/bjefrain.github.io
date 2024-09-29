@@ -137,12 +137,14 @@
         }
         
         #chatFooter {
-            padding: 10px;
             display: flex;
             align-items: center;
-        }
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-top: 1px solid #ccc;
+         }
 
-        #chatFooter textarea {
+         #chatFooter textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -152,9 +154,9 @@
             box-sizing: border-box;
             outline: none;
             flex-grow: 1;
-        }
+         }
 
-        #chatFooter button {
+         #chatFooter button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -165,11 +167,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
+            transition: background-color 0.3s;
+         }
 
-        #chatFooter button:hover {
+         #chatFooter button:hover {
             background-color: #0056b3;
-        }
+         }
 
         #chatFooter button .material-icons {
             font-size: 24px;
