@@ -52,187 +52,135 @@
 
       gtag('config', 'G-MMWPSFFH4E');
    </script>
-   <style>
-      #chatIcon {
-         position: fixed;
-         bottom: 90px;
-         right: 25px;
-         background-color: #007bff;
-         color: white;
-         border-radius: 50%;
-         padding: 15px;
-         cursor: pointer;
-         z-index: 1000;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-      }
+    <style>
+        /* CSS del chatbox */
+        #chatIcon {
+            position: fixed;
+            bottom: 90px;
+            right: 25px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      #chatBox {
-         display: none;
-         position: fixed;
-         bottom: 110px;
-         right: 20px;
-         width: 350px;
-         height: 400px;
-         /* Altura inicial */
-         background-color: white;
-         border: 1px solid #007bff;
-         border-radius: 10px;
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-         z-index: 1000;
-         display: flex;
-         flex-direction: column;
-         transition: width 0.3s, height 0.3s;
-      }
+        #chatBox {
+            display: none;
+            position: fixed;
+            bottom: 110px;
+            right: 20px;
+            width: 350px;
+            height: 400px;
+            background-color: white;
+            border: 1px solid #007bff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s, height 0.3s;
+        }
 
-      #chatHeader {
-         background-color: #007bff;
-         color: white;
-         padding: 10px;
-         border-top-left-radius: 10px;
-         border-top-right-radius: 10px;
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-      }
+        #chatHeader {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-      #chatHeader .close-icon {
-         cursor: pointer;
-         font-size: 20px;
-      }
+        #chatHeader .close-icon {
+            cursor: pointer;
+            font-size: 20px;
+        }
 
-      #chatHeader .expand-icon {
-         cursor: pointer;
-         font-size: 20px;
-         margin-left: 10px;
-      }
+        #chatHeader .expand-icon {
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 10px;
+        }
 
-      #chatContent {
-         padding: 10px;
-         max-height: 300px;
-         /* Altura del contenido inicialmente */
-         overflow-y: auto;
-         display: flex;
-         flex-direction: column;
-         flex-grow: 1;
-         /* Permitir que crezca */
-         transition: max-height 0.3s;
-      }
+        #chatContent {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            transition: max-height 0.3s;
+        }
 
-      .message {
-         padding: 10px;
-         margin-bottom: 5px;
-         border-radius: 5px;
-      }
+        .message {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
 
-      .sent {
-         background-color: #e1ffc7;
-         align-self: flex-end;
-         margin-left: auto;
-      }
+        .sent {
+            background-color: #e1ffc7;
+            align-self: flex-end;
+            margin-left: auto;
+        }
 
-      .received {
-         background-color: #f1f1f1;
-         align-self: flex-start;
-         margin-right: auto;
-      }
+        .received {
+            background-color: #f1f1f1;
+            align-self: flex-start;
+            margin-right: auto;
+        }
 
-      #chatFooter {
-         padding: 10px;
-         display: flex;
-         align-items: center;
-      }
+        #chatFooter {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
 
-      #chatFooter input {
-         width: 100%;
-         padding: 5px;
-         border: 1px solid #ccc;
-         border-radius: 5px;
-         margin-right: 10px;
-      }
+        #chatFooter textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+            flex-grow: 1;
+        }
 
-      #chatFooter button {
-         background-color: #007bff;
-         color: white;
-         border: none;
-         padding: 10px;
-         border-radius: 50%;
-         cursor: pointer;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-      }
+        #chatFooter button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      #spinner {
-         display: none;
-         text-align: center;
-         margin: 10px 0;
-      }
+        #chatFooter button:hover {
+            background-color: #0056b3;
+        }
 
-      /* Media query para pantallas grandes */
-      @media (min-width: 768px) {
-         #chatBox.expanded {
-            width: 80%;
-            height: 80%;
-         }
+        #chatFooter button .material-icons {
+            font-size: 24px;
+        }
 
-         #chatContent.expanded {
-            max-height: calc(100% - 140px);
-            /* Ajustar altura según el header y footer */
-         }
-      }
-
-      /* Media query para pantallas pequeñas */
-      @media (max-width: 767px) {
-         #chatBox.expanded {
-            height: 80%;
-         }
-
-         #chatContent.expanded {
-            max-height: 70%;
-         }
-      }
-
-      .feedback-buttons {
-         display: flex;
-         justify-content: flex-end;
-         /* Ubica los botones al final del mensaje */
-         gap: 10px;
-         /* Espacio entre los botones */
-         margin-top: 10px;
-         /* Separación del texto del mensaje */
-      }
-
-      .feedback-buttons button {
-         background-color: transparent;
-         /* Fondo transparente */
-         border: none;
-         /* Sin bordes */
-         cursor: pointer;
-         font-size: 18px;
-         /* Tamaño del icono */
-         transition: transform 0.2s ease-in-out;
-         /* Animación de escalado */
-      }
-
-      .feedback-buttons button:hover {
-         transform: scale(1.2);
-         /* Aumenta el tamaño al pasar el mouse */
-         color: #007BFF;
-         /* Cambia el color al pasar el mouse (azul claro) */
-      }
-
-      .feedback-buttons button:focus {
-         outline: none;
-         /* Sin borde de enfoque */
-      }
-
-      .feedback-buttons i {
-         color: #666;
-         /* Color gris para los iconos */
-      }
-   </style>
+        #spinner {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 
 <body class="demo-1" id="bdy">
@@ -240,34 +188,28 @@
       <span class="material-icons">chat</span>
    </div>
    <div id="chatBox">
-      <div id="chatHeader">
-         <span class="expand-icon material-icons">expand_more</span>
-         Asistente Estudiantil
-         <span class="close-icon material-icons">close</span>
-      </div>
-      <div id="chatContent">
-         <div class="message received">
-            <div class="message-container">
-               <img src="assets/imagen/avatares/chatbot-avatar.png" class="avatar"
-                  style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="Chatbot Avatar">
-               <span>Hola, ¿cómo puedo ayudarte?</span>
-            </div>
-         </div>
-      </div>
-
-      <div id="chatFooter">
-         <div id="spinner" style="display: none;">
-            <div class="spinner-border text-primary" role="status">
-               <span class="sr-only">Loading...</span>
-            </div>
-         </div>
-         <textarea type="text" id="chatInput" placeholder="Escribe un mensaje...">
-         <button id="sendButton">
-            <span class="material-icons">send</span>
-         </button>
-      </div>
+       <div id="chatHeader">
+           <span class="expand-icon material-icons">expand_more</span>
+           Asistente Estudiantil
+           <span class="close-icon material-icons">close</span>
+       </div>
+       <div id="chatContent">
+           <div class="message received">
+               <div class="message-container">
+                   <img src="assets/imagen/avatares/chatbot-avatar.png" class="avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="Chatbot Avatar">
+                   <span>Hola, ¿cómo puedo ayudarte?</span>
+               </div>
+           </div>
+       </div>
+   
+       <div id="chatFooter">
+           <textarea id="chatInput" placeholder="Escribe un mensaje..."></textarea>
+           <button id="sendButton">
+               <span class="material-icons">send</span>
+           </button>
+       </div>
    </div>
-
    <!-- Start PreLoader
          ============================================= -->
    <div class="se-pre-con2"></div>
