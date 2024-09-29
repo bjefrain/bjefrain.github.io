@@ -180,6 +180,44 @@
             text-align: center;
             margin: 10px 0;
         }
+         .feedback-buttons {
+         display: flex;
+         justify-content: flex-end;
+         /* Ubica los botones al final del mensaje */
+         gap: 10px;
+         /* Espacio entre los botones */
+         margin-top: 10px;
+         /* Separación del texto del mensaje */
+      }
+
+      .feedback-buttons button {
+         background-color: transparent;
+         /* Fondo transparente */
+         border: none;
+         /* Sin bordes */
+         cursor: pointer;
+         font-size: 18px;
+         /* Tamaño del icono */
+         transition: transform 0.2s ease-in-out;
+         /* Animación de escalado */
+      }
+
+      .feedback-buttons button:hover {
+         transform: scale(1.2);
+         /* Aumenta el tamaño al pasar el mouse */
+         color: #007BFF;
+         /* Cambia el color al pasar el mouse (azul claro) */
+      }
+
+      .feedback-buttons button:focus {
+         outline: none;
+         /* Sin borde de enfoque */
+      }
+
+      .feedback-buttons i {
+         color: #666;
+         /* Color gris para los iconos */
+      }
     </style>
 </head>
 
