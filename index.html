@@ -241,6 +241,19 @@
             max-height: 70%;
          }
       }
+      .suggestion-button {
+         background-color: #f1f1f1;
+         border: 1px solid #007bff;
+         border-radius: 5px;
+         padding: 5px 10px;
+         margin: 5px;
+         cursor: pointer;
+      }
+
+      .suggestion-button:hover {
+         background-color: #007bff;
+         color: white;
+      }
     </style>
 </head>
 
@@ -260,10 +273,13 @@
                    <img src="assets/imagen/avatares/chatbot-avatar.png" class="avatar"
                         style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="Chatbot Avatar">
                    <span>Hola, ¿cómo puedo ayudarte?</span>
+                   
                </div>
            </div>
        </div>
-   
+       <div id="suggestions">
+            <!-- Aquí se agregarán los botones de sugerencias -->
+      </div>
        <div id="chatFooter">
            <div id="spinner" style="display: none;">
                <div class="spinner-border text-primary" role="status">
@@ -1647,7 +1663,7 @@
         chatFooter.style.display = 'none'; // Ocultar el pie del chat
     }
 });
-   
+
    document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
          var chatBox=document.getElementById('chatBox');
          var chatFooter=document.getElementById('chatFooter');
@@ -1674,13 +1690,58 @@
     }
 });
 
-   
+   const examplePrompts = [
+      "¿Cuáles son los próximos eventos estudiantiles?",
+      "¿Cómo puedo registrarme a una clase?",
+      "¿Cuándo son las fechas de exámenes?",
+      "¿Cuál es el horario de atención al estudiante?",
+      "¿Dónde puedo encontrar materiales de estudio?"
+   ];
    function sendSuggestion(suggestion) {
       var chatInput=document.getElementById('chatInput');
       chatInput.value=suggestion; // Rellenar el input con la sugerencia
       sendMessage(); // Llamar a la función que envía el mensaje
    }
-   
+   document.getElementById('chatInput').addEventListener('focus', function() {
+      const chatInput = document.getElementById('chatInput');
+      chatInput.value = chatInput.placeholder; // Copiar la sugerencia al campo de entrada
+   });
+   let currentExampleIndex = 0;
+
+   function cycleExamplePrompts() {
+      const chatInput = document.getElementById('chatInput');
+      
+      // Establecer el valor del campo de entrada con la sugerencia actual
+      chatInput.placeholder = examplePrompts[currentExampleIndex];
+      
+      // Cambiar al siguiente ejemplo, o regresar al inicio si ya se mostraron todos
+      currentExampleIndex = (currentExampleIndex + 1) % examplePrompts.length;
+   }
+
+   // Llamar a cycleExamplePrompts cada 5 segundos
+   setInterval(cycleExamplePrompts, 5000);
+
+   function displaySuggestions() {
+      const suggestionsDiv = document.getElementById('suggestions');
+      suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
+      
+      examplePrompts.forEach((prompt) => {
+         const suggestionButton = document.createElement('button');
+         suggestionButton.textContent = prompt;
+         suggestionButton.classList.add('suggestion-button');
+         
+         // Al hacer clic, copiar el ejemplo al área de texto
+         suggestionButton.addEventListener('click', function() {
+               const chatInput = document.getElementById('chatInput');
+               chatInput.value = prompt;
+         });
+         
+         suggestionsDiv.appendChild(suggestionButton);
+      });
+   }
+
+   displaySuggestions(); // Llamar la función para mostrar las sugerencias
+
    let chatHistory=[];
    
    async function sendMessage() {
