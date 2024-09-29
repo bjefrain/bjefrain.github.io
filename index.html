@@ -184,14 +184,14 @@
             margin: 10px 0;
         }
          .feedback-buttons {
-         display: flex;
-         justify-content: flex-end;
-         /* Ubica los botones al final del mensaje */
-         gap: 10px;
-         /* Espacio entre los botones */
-         margin-top: 10px;
-         /* Separación del texto del mensaje */
-      }
+            display: flex;
+            justify-content: flex-end;
+            /* Ubica los botones al final del mensaje */
+            gap: 10px;
+            /* Espacio entre los botones */
+            margin-top: 10px;
+            /* Separación del texto del mensaje */
+         }
 
       .feedback-buttons button {
          background-color: transparent;
@@ -246,12 +246,14 @@
       }
       #suggestions {
          padding: 10px;
-         display: flex;
+         display: none; /* Por defecto, oculto */
          flex-direction: column;
          gap: 10px;
          margin-bottom: 10px;
          max-height: 150px;
          overflow-y: auto;
+         transition: max-height 0.3s ease, opacity 0.3s ease; /* Transiciones suaves */
+         opacity: 0;
       }
 
       .suggestion-button {
@@ -277,6 +279,32 @@
          outline: none;
          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       }
+    
+
+      #suggestions.visible {
+         display: flex;
+         opacity: 1;
+         max-height: 150px;
+      }
+
+      #toggleSuggestions {
+         background-color: #007bff;
+         color: white;
+         border: none;
+         padding: 5px;
+         border-radius: 50%;
+         cursor: pointer;
+         margin-right: 10px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transition: background-color 0.3s;
+      }
+
+      #toggleSuggestions:hover {
+         background-color: #0056b3;
+      }
+
     </style>
 </head>
 
@@ -304,6 +332,9 @@
             <!-- Aquí se agregarán los botones de sugerencias -->
       </div>
        <div id="chatFooter">
+            <button id="toggleSuggestions">
+               <span class="material-icons">expand_less</span> <!-- Icono para mostrar u ocultar -->
+            </button>
            <div id="spinner" style="display: none;">
                <div class="spinner-border text-primary" role="status">
                   <span class="sr-only">Loading...</span>
@@ -1761,7 +1792,23 @@
     });
 }
 
+// Función para mostrar/ocultar las sugerencias
+document.getElementById('toggleSuggestions').addEventListener('click', function() {
+    const suggestionsDiv = document.getElementById('suggestions');
+    const toggleIcon = this.querySelector('.material-icons');
 
+    if (suggestionsDiv.classList.contains('visible')) {
+        // Ocultar sugerencias
+        suggestionsDiv.classList.remove('visible');
+        suggestionsDiv.style.maxHeight = '0';
+        toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
+    } else {
+        // Mostrar sugerencias
+        suggestionsDiv.classList.add('visible');
+        suggestionsDiv.style.maxHeight = '150px'; // La altura máxima de las sugerencias
+        toggleIcon.textContent = 'expand_less'; // Cambiar el icono a contraer
+    }
+});
    displaySuggestions(); // Llamar la función para mostrar las sugerencias
 
    let chatHistory=[];
