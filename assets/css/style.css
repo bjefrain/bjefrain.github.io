@@ -6603,8 +6603,13 @@ header.header.single-head .navbar.in {
 }
 
 #chatContent {
-    overflow-y: auto; /* Permitir scroll en el contenido del chat */
-    max-height: calc(100% - 60px); /* Asegurarse de que el contenido no desborde el área visible del chat */
+    display: block; /* Mantener visible el contenedor */
+    overflow-y: auto;
+}
+
+#chatContent.disabled {
+    pointer-events: none; /* Deshabilitar la interacción */
+    opacity: 0.5; /* Mostrar el chat desactivado visualmente */
 }
 
 #suggestions {
