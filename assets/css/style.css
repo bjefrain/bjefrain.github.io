@@ -6572,3 +6572,23 @@ header.header.single-head .navbar.in {
     75% { transform: translateX(3px); }
     100% { transform: translateX(-2px); }
 }
+
+#suggestions {
+    position: absolute; /* Asegura que se posicione sobre otros elementos */
+    top: 0; /* Ajusta según la ubicación deseada */
+    width: 100%; /* Que ocupe todo el ancho del contenedor */
+    z-index: 1000; /* Asegura que esté sobre el contenido */
+    background-color: white; /* Fondo para diferenciar del chat */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease; /* Suaviza el despliegue */
+}
+
+#suggestions.visible {
+    max-height: 150px; /* Ajusta la altura según lo necesario */
+}
+
+#chatContent {
+    position: relative; /* Asegura que los elementos dentro se posicionen correctamente */
+    z-index: 0; /* Mantén el contenido del chat por debajo de las sugerencias */
+}
