@@ -1722,10 +1722,7 @@
       chatInput.value=suggestion; // Rellenar el input con la sugerencia
       sendMessage(); // Llamar a la función que envía el mensaje
    }
-   document.getElementById('chatInput').addEventListener('focus', function() {
-      const chatInput = document.getElementById('chatInput');
-      chatInput.value = chatInput.placeholder; // Copiar la sugerencia al campo de entrada
-   });
+  
    let currentExampleIndex = 0;
 
    function cycleExamplePrompts() {
