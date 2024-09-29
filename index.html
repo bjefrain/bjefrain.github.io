@@ -218,6 +218,29 @@
          color: #666;
          /* Color gris para los iconos */
       }
+           /* Media query para pantallas grandes */
+      @media (min-width: 768px) {
+         #chatBox.expanded {
+            width: 80%;
+            height: 80%;
+         }
+
+         #chatContent.expanded {
+            max-height: calc(100% - 140px);
+            /* Ajustar altura según el header y footer */
+         }
+      }
+
+      /* Media query para pantallas pequeñas */
+      @media (max-width: 767px) {
+         #chatBox.expanded {
+            height: 80%;
+         }
+
+         #chatContent.expanded {
+            max-height: 70%;
+         }
+      }
     </style>
 </head>
 
