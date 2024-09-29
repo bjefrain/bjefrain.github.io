@@ -6601,3 +6601,18 @@ header.header.single-head .navbar.in {
     background-color: #f1f1f1; 
     /* No se necesita margin o padding adicional en la parte inferior */
 }
+
+#chatContent {
+    overflow-y: auto; /* Permitir scroll en el contenido del chat */
+    max-height: calc(100% - 60px); /* Asegurarse de que el contenido no desborde el área visible del chat */
+}
+
+#suggestions {
+    transition: max-height 0.5s ease-in-out; /* Transición suave */
+    overflow-y: auto; /* Scroll en las sugerencias si son demasiadas */
+    max-height: 0; /* Altura inicial cerrada */
+}
+
+#suggestions.visible {
+    max-height: 150px; /* Ajusta esta altura a lo que te parezca necesario */
+}
