@@ -1901,7 +1901,7 @@
    }
    }
    
-   function showReportForm(messageDiv, message, reportButton) {
+function showReportForm(messageDiv, message, reportButton) {
     // Verificar si el formulario de reporte ya existe
     let existingReportForm = messageDiv.querySelector('.report-form');
     
@@ -1912,15 +1912,16 @@
     } else {
         // Crear y mostrar el formulario de reporte
         const reportFormDiv = document.createElement('div');
-        reportFormDiv.className = 'report-form';
+        reportFormDiv.className = 'report-form mt-3'; // Añadir margen superior usando Bootstrap
     
         const reportTextarea = document.createElement('textarea');
         reportTextarea.placeholder = 'Escribe tu reporte aquí...';
-        reportTextarea.className = 'report-textarea';
+        reportTextarea.className = 'form-control mb-2'; // Clases de Bootstrap para el textarea (form-control y margen inferior)
+        reportTextarea.rows = 3; // Definir un tamaño de 3 filas para el textarea
     
         const sendReportButton = document.createElement('button');
         sendReportButton.textContent = 'Enviar reporte';
-        sendReportButton.className = 'send-report-button';
+        sendReportButton.className = 'btn btn-primary'; // Clases de Bootstrap para el botón (btn y btn-primary)
         sendReportButton.onclick = () => submitReport(messageDiv, message, reportTextarea.value, reportFormDiv, reportButton);
     
         reportFormDiv.appendChild(reportTextarea);
@@ -1932,6 +1933,7 @@
         reportButton.style.color = 'orange'; 
     }
 }
+
    
    async function submitReport(messageDiv, message, reportText, reportFormDiv, reportButton) {
     if (reportText.trim() === '') {
