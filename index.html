@@ -138,12 +138,22 @@
         
         #chatFooter {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             padding: 10px;
             background-color: #f1f1f1;
             border-top: 1px solid #ccc;
-         }
-
+            position: relative; /* Para mantener elementos bien alineados */
+        }
+        #inputContainer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            border-radius: 20px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
          #chatFooter textarea {
             width: 100%;
             padding: 10px;
@@ -245,16 +255,16 @@
          }
       }
       #suggestions {
-         padding: 10px;
-         display: none; /* Por defecto, oculto */
-         flex-direction: column;
-         gap: 10px;
-         margin-bottom: 10px;
-         max-height: 150px;
-         overflow-y: auto;
-         transition: max-height 0.3s ease, opacity 0.3s ease; /* Transiciones suaves */
-         opacity: 0;
-      }
+            padding: 10px;
+            display: none; /* Por defecto, oculto */
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            transition: max-height 0.3s ease, opacity 0.3s ease; /* Transiciones suaves */
+            opacity: 0;
+        }
 
       .suggestion-button {
          background-color: #f1f1f1;
@@ -286,24 +296,59 @@
          opacity: 1;
          max-height: 150px;
       }
-
       #toggleSuggestions {
-         background-color: #007bff;
-         color: white;
-         border: none;
-         padding: 5px;
-         border-radius: 50%;
-         cursor: pointer;
-         margin-right: 10px;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         transition: background-color 0.3s;
-      }
+            position: absolute;
+            right: 10px;
+            top: -40px; /* Ubicado justo encima del input */
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
 
-      #toggleSuggestions:hover {
-         background-color: #0056b3;
-      }
+        #toggleSuggestions:hover {
+            background-color: #0056b3;
+        }
+
+     
+
+        #suggestions.visible {
+            display: flex;
+            opacity: 1;
+            max-height: 150px;
+        }
+      #chatInput {
+        flex-grow: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+        outline: none;
+        resize: none;
+        background-color: #fff;
+    }
+    #sendButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sendButton:hover {
+    background-color: #0056b3;
+}
 
     </style>
 </head>
@@ -331,19 +376,21 @@
        <div id="suggestions">
             <!-- Aquí se agregarán los botones de sugerencias -->
       </div>
-       <div id="chatFooter">
-            <button id="toggleSuggestions">
-               <span class="material-icons">expand_less</span> <!-- Icono para mostrar u ocultar -->
-            </button>
-           <div id="spinner" style="display: none;">
-               <div class="spinner-border text-primary" role="status">
-                  <span class="sr-only">Loading...</span>
-               </div>
+      <div id="chatFooter">
+            <div id="inputContainer">
+                <textarea id="chatInput" placeholder="Escribe un mensaje..."></textarea>
+                <button id="sendButton">
+                    <span class="material-icons">send</span>
+                </button>
             </div>
-           <textarea id="chatInput" placeholder="Escribe un mensaje..."></textarea>
-           <button id="sendButton">
-               <span class="material-icons">send</span>
-           </button>
+            <button id="toggleSuggestions">
+                <span class="material-icons">expand_less</span> <!-- Icono para mostrar u ocultar -->
+            </button>
+            <div id="spinner" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
        </div>
    </div>
    <!-- Start PreLoader
