@@ -1694,111 +1694,109 @@
 
    </script>
    <script>
-     // Variables para guardar las alturas iniciales
+      // Variables para guardar las alturas iniciales
    var initialChatBoxHeight;
    var initialChatContentHeight;
    
-   window.onload = function () {
-       var chatBox = document.getElementById('chatBox');
-       var chatContent = document.getElementById('chatContent');
-       initialChatBoxHeight = chatBox.offsetHeight + 'px';
-       initialChatContentHeight = chatContent.offsetHeight + 'px';
-   };
+   window.onload=function() {
+      var chatBox=document.getElementById('chatBox');
+      var chatContent=document.getElementById('chatContent');
+      initialChatBoxHeight=chatBox.offsetHeight+'px';
+      initialChatContentHeight=chatContent.offsetHeight+'px';
+   }
    
-   // Toggle de apertura y cierre del chat
-   document.getElementById('chatIcon').addEventListener('click', function () {
-       var chatBox = document.getElementById('chatBox');
-       var chatFooter = document.getElementById('chatFooter');
+   ;
    
-       if (chatBox.style.display === 'none' || chatBox.style.display === '') {
-           chatBox.style.display = 'block'; // Mostrar el chat
-           chatFooter.style.display = 'flex'; // Mostrar el pie del chat
-       } else {
-           chatBox.style.display = 'none'; // Ocultar el chat
-           chatFooter.style.display = 'none'; // Ocultar el pie del chat
-       }
-   });
+   document.getElementById('chatIcon').addEventListener('click', function() {
+    var chatBox = document.getElementById('chatBox');
+    var chatFooter = document.getElementById('chatFooter');
+
+    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
+        chatBox.style.display = 'block'; // Mostrar el chat
+        chatFooter.style.display = 'flex'; // Mostrar el pie del chat
+    } else {
+        chatBox.style.display = 'none'; // Ocultar el chat
+        chatFooter.style.display = 'none'; // Ocultar el pie del chat
+    }
+});
+
+   document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
+         var chatBox=document.getElementById('chatBox');
+         var chatFooter=document.getElementById('chatFooter');
+         chatBox.style.display='none';
+         chatFooter.style.display='none';
+      });
    
-   document.querySelector('#chatHeader .close-icon').addEventListener('click', function () {
-       var chatBox = document.getElementById('chatBox');
-       var chatFooter = document.getElementById('chatFooter');
-       chatBox.style.display = 'none';
-       chatFooter.style.display = 'none';
-   });
-   
-   document.querySelector('#chatHeader .expand-icon').addEventListener('click', function () {
-       var chatBox = document.getElementById('chatBox');
-       var chatContent = document.getElementById('chatContent');
-   
-       if (chatBox.classList.contains('expanded')) {
-           chatBox.classList.remove('expanded');
-           chatContent.classList.remove('expanded');
-           this.textContent = 'expand_more';
-           chatBox.style.height = initialChatBoxHeight; // Regresar a altura inicial
-           chatContent.style.height = initialChatContentHeight; // Regresar a altura inicial
-       } else {
-           chatBox.classList.add('expanded');
-           chatContent.classList.add('expanded');
-           this.textContent = 'expand_less';
-           chatBox.style.height = '500px'; // Ajusta la altura según sea necesario
-           chatContent.style.height = 'calc(500px - 60px)'; // Ajusta el 60px al tamaño de tu chatFooter
-       }
-   });
-   
-   // Mostrar sugerencias en el input
+   document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
+    var chatBox = document.getElementById('chatBox');
+    var chatContent = document.getElementById('chatContent');
+
+    if (chatBox.classList.contains('expanded')) {
+        chatBox.classList.remove('expanded');
+        chatContent.classList.remove('expanded');
+        this.textContent = 'expand_more';
+        chatBox.style.height = initialChatBoxHeight; // Regresar a altura inicial
+        chatContent.style.height = initialChatContentHeight; // Regresar a altura inicial
+    } else {
+        chatBox.classList.add('expanded');
+        chatContent.classList.add('expanded');
+        this.textContent = 'expand_less';
+        chatBox.style.height = '500px'; // Ajusta la altura según sea necesario
+        chatContent.style.height = 'calc(500px - 60px)'; // Ajusta el 60px al tamaño de tu chatFooter
+    }
+});
+
    const examplePrompts = [
-       "¿Cuáles son los próximos eventos estudiantiles?",
-       "¿Cómo puedo registrarme a una clase?",
-       "¿Cuándo son las fechas de exámenes?",
-       "¿Cuál es el horario de atención al estudiante?",
-       "¿Dónde puedo encontrar materiales de estudio?"
+      "¿Cuáles son los próximos eventos estudiantiles?",
+      "¿Cómo puedo registrarme a una clase?",
+      "¿Cuándo son las fechas de exámenes?",
+      "¿Cuál es el horario de atención al estudiante?",
+      "¿Dónde puedo encontrar materiales de estudio?"
    ];
-   
    function sendSuggestion(suggestion) {
-       var chatInput = document.getElementById('chatInput');
-       chatInput.value = suggestion; // Rellenar el input con la sugerencia
-       sendMessage(); // Llamar a la función que envía el mensaje
+      var chatInput=document.getElementById('chatInput');
+      chatInput.value=suggestion; // Rellenar el input con la sugerencia
+      sendMessage(); // Llamar a la función que envía el mensaje
    }
-   
+  
    let currentExampleIndex = 0;
-   
+
    function cycleExamplePrompts() {
-       const chatInput = document.getElementById('chatInput');
-   
-       // Establecer el valor del campo de entrada con la sugerencia actual
-       chatInput.placeholder = examplePrompts[currentExampleIndex];
-   
-       // Cambiar al siguiente ejemplo, o regresar al inicio si ya se mostraron todos
-       currentExampleIndex = (currentExampleIndex + 1) % examplePrompts.length;
+      const chatInput = document.getElementById('chatInput');
+      
+      // Establecer el valor del campo de entrada con la sugerencia actual
+      chatInput.placeholder = examplePrompts[currentExampleIndex];
+      
+      // Cambiar al siguiente ejemplo, o regresar al inicio si ya se mostraron todos
+      currentExampleIndex = (currentExampleIndex + 1) % examplePrompts.length;
    }
-   
+
    // Llamar a cycleExamplePrompts cada 5 segundos
    setInterval(cycleExamplePrompts, 5000);
-   
-   // Función para mostrar las sugerencias
+
    function displaySuggestions() {
-       const suggestionsDiv = document.getElementById('suggestions');
-       suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
-   
-       examplePrompts.forEach((prompt) => {
-           const suggestionButton = document.createElement('button');
-           suggestionButton.textContent = prompt;
-           suggestionButton.classList.add('suggestion-button');
-   
-           // Al hacer clic, copiar el ejemplo al área de texto
-           suggestionButton.addEventListener('click', function () {
-               const chatInput = document.getElementById('chatInput');
-               chatInput.value = prompt;
-           });
-   
-           suggestionsDiv.appendChild(suggestionButton);
-       });
-   }
-   
-   // Función para mostrar/ocultar las sugerencias con optimización
-   document.getElementById('toggleSuggestions').addEventListener('click', function () {
     const suggestionsDiv = document.getElementById('suggestions');
-    const chatContent = document.getElementById('chatContent');
+    suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
+    
+    examplePrompts.forEach((prompt) => {
+        const suggestionButton = document.createElement('button');
+        suggestionButton.textContent = prompt;
+        suggestionButton.classList.add('suggestion-button');
+        
+        // Al hacer clic, copiar el ejemplo al área de texto y enviar el mensaje
+        suggestionButton.addEventListener('click', function() {
+            const chatInput = document.getElementById('chatInput');
+            chatInput.value = prompt;
+            //sendMessage(); // Enviar el mensaje de inmediato
+        });
+        
+        suggestionsDiv.appendChild(suggestionButton);
+    });
+}
+
+// Función para mostrar/ocultar las sugerencias
+document.getElementById('toggleSuggestions').addEventListener('click', function() {
+    const suggestionsDiv = document.getElementById('suggestions');
     const toggleIcon = this.querySelector('.material-icons');
 
     if (suggestionsDiv.classList.contains('visible')) {
@@ -1806,142 +1804,79 @@
         suggestionsDiv.classList.remove('visible');
         suggestionsDiv.style.maxHeight = '0';
         toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
-        chatContent.classList.remove('hidden'); // Mostrar el contenido del chat
     } else {
         // Mostrar sugerencias
         suggestionsDiv.classList.add('visible');
-        suggestionsDiv.style.maxHeight = '150px'; // Ajustar la altura de las sugerencias
+        suggestionsDiv.style.maxHeight = '150px'; // La altura máxima de las sugerencias
         toggleIcon.textContent = 'expand_less'; // Cambiar el icono a contraer
-        chatContent.classList.add('hidden'); // Ocultar el contenido del chat
     }
 });
-
-// Después de seleccionar una sugerencia, ocultar las sugerencias y mostrar el chat
-function sendSuggestion(suggestion) {
-    var chatInput = document.getElementById('chatInput');
-    chatInput.value = suggestion; // Rellenar el input con la sugerencia
-    
-    // Simular el envío del mensaje
-    sendMessage();
-    
-    // Cerrar automáticamente las sugerencias y mostrar el chat
-    const suggestionsDiv = document.getElementById('suggestions');
-    const chatContent = document.getElementById('chatContent');
-    const toggleIcon = document.getElementById('toggleSuggestions').querySelector('.material-icons');
-    
-    suggestionsDiv.classList.remove('visible');
-    suggestionsDiv.style.maxHeight = '0';
-    toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
-    chatContent.classList.remove('hidden'); // Mostrar el contenido del chat
-}
+   displaySuggestions(); // Llamar la función para mostrar las sugerencias
 
    let chatHistory=[];
    
    async function sendMessage() {
-    var chatInput = document.getElementById('chatInput');
-    var message = chatInput.value.trim();
-
-    if (message !== "") {
-        var chatContent = document.getElementById('chatContent');
-        var spinner = document.getElementById('spinner');
-        spinner.style.display = 'block'; // Mostrar spinner
-
-        // Crear y agregar el mensaje del usuario en el chat
-        var messageDiv = document.createElement('div');
-        messageDiv.className = 'message sent';
-
-        var messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container';
-
-        var userAvatar = document.createElement('img');
-        userAvatar.src = 'assets/imagen/avatares/user-avatar.png';
-        userAvatar.style.width = '30px';
-        userAvatar.style.height = '30px';
-        userAvatar.style.borderRadius = '50%';
-        userAvatar.style.marginRight = '10px';
-        userAvatar.className = 'avatar';
-
-        var messageText = document.createElement('span');
-        messageText.textContent = message;
-
-        messageContainer.appendChild(userAvatar);
-        messageContainer.appendChild(messageText);
-        messageDiv.appendChild(messageContainer);
-        chatContent.appendChild(messageDiv);
-        chatContent.scrollTop = chatContent.scrollHeight; // Desplazar el scroll al final
-
-        // Limpiar el campo de entrada después de enviar
-        chatInput.value = "";
-        chatInput.disabled = true;
-        document.getElementById('sendButton').disabled = true;
-
-        try {
-            const response = await fetch('https://skhlivck46.execute-api.us-west-1.amazonaws.com/dev/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: message,
-                    messages: chatHistory
-                })
-            });
-
-            const data = await response.json();
-            const messageId = generateUUID(); // Generar un ID único
-            const timestamp = Date.now(); // Generar timestamp
-
-            // Guardar el mensaje del usuario en el historial
-            chatHistory.push({
-                role: 'user',
-                content: message,
-                answer: data,
-                message_id: messageId,
-                timestamp: timestamp
-            });
-
-            // Guardar la respuesta del asistente en el historial
-            chatHistory.push({
-                role: 'assistant',
-                content: data,
-                answer: "",
-                message_id: messageId,
-                timestamp: timestamp
-            });
-
-            // Simular la respuesta del chatbot
-            await simulateTyping(data, chatContent);
-
-            // Habilitar nuevamente el input y el botón de envío después de la respuesta
-            chatInput.disabled = false;
-            document.getElementById('sendButton').disabled = false;
-            chatInput.focus();
-
-        } catch (error) {
-            // Mostrar mensaje de error si ocurre algún problema
-            var errorMessageDiv = document.createElement('div');
-            errorMessageDiv.className = 'message received';
-            errorMessageDiv.textContent = 'Hubo un error al enviar el mensaje.';
-            chatContent.appendChild(errorMessageDiv);
-            chatContent.scrollTop = chatContent.scrollHeight;
-        }
-
-        spinner.style.display = 'none'; // Ocultar el spinner
-
-        // Habilitar nuevamente el chatContent y esconder las sugerencias
-        const suggestionsDiv = document.getElementById('suggestions');
-        const toggleIcon = document.getElementById('toggleSuggestions').querySelector('.material-icons');
-
-        suggestionsDiv.classList.remove('visible');
-        suggestionsDiv.style.maxHeight = '0';
-        toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
-        chatContent.classList.remove('hidden'); // Mostrar el contenido del chat
-
-        // Resetear el estado del input y botón después del envío
-        chatInput.disabled = false;
-        document.getElementById('sendButton').disabled = false;
-    }
-}
+      var chatInput=document.getElementById('chatInput');
+      var message=chatInput.value.trim();
+   
+      if (message !=="") {
+         var chatContent=document.getElementById('chatContent');
+         var spinner=document.getElementById('spinner');
+         spinner.style.display='block';
+   
+         var messageDiv=document.createElement('div');
+         messageDiv.className='message sent';
+   
+         var messageContainer=document.createElement('div');
+         messageContainer.className='message-container';
+   
+         var userAvatar=document.createElement('img');
+         userAvatar.src='assets/imagen/avatares/user-avatar.png';
+         userAvatar.style.width='30px';
+         userAvatar.style.height='30px';
+         userAvatar.style.borderRadius='50%';
+         userAvatar.style.marginRight='10px';
+         userAvatar.className='avatar';
+   
+         var messageText=document.createElement('span');
+         messageText.textContent=message;
+   
+         messageContainer.appendChild(userAvatar);
+         messageContainer.appendChild(messageText);
+         messageDiv.appendChild(messageContainer);
+         chatContent.appendChild(messageDiv);
+         chatContent.scrollTop=chatContent.scrollHeight;
+   
+         chatInput.value="";
+         chatInput.disabled=true;
+         document.getElementById('sendButton').disabled=true;
+   
+         try {
+            const response=await fetch('https://skhlivck46.execute-api.us-west-1.amazonaws.com/dev/chat', {
+   
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json'
+               }
+   
+               ,
+               body: JSON.stringify({
+                  query: message, messages: chatHistory
+               })
+         });
+      const data=await response.json();
+      const messageId=generateUUID(); // Asegurar que el message_id se genere correctamente
+      const timestamp=Date.now(); // Generar el timestamp para el historial
+   
+      chatHistory.push({
+         role: 'user', content: message, answer: data, message_id: messageId, timestamp: timestamp
+      });
+   
+   chatHistory.push({
+      role: 'assistant', content: data, answer: "", message_id: messageId, timestamp: timestamp
+   });
+   
+   await simulateTyping(data, chatContent);
    
    // Enviar los mensajes a DynamoDB como feedback inicial (aunque no se haya dado aún)
    const feedback= {
