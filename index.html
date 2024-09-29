@@ -1695,113 +1695,123 @@
    </script>
    <script>
      // Variables para guardar las alturas iniciales
-        var initialChatBoxHeight;
-        var initialChatContentHeight;
+   var initialChatBoxHeight;
+   var initialChatContentHeight;
+   
+   window.onload=function() {
+      var chatBox=document.getElementById('chatBox');
+      var chatContent=document.getElementById('chatContent');
+      initialChatBoxHeight=chatBox.offsetHeight+'px';
+      initialChatContentHeight=chatContent.offsetHeight+'px';
+   }
+   
+   ;
+   
+   document.getElementById('chatIcon').addEventListener('click', function() {
+    var chatBox = document.getElementById('chatBox');
+    var chatFooter = document.getElementById('chatFooter');
 
-        window.onload = function() {
-            var chatBox = document.getElementById('chatBox');
-            var chatContent = document.getElementById('chatContent');
-            initialChatBoxHeight = chatBox.offsetHeight + 'px';
-            initialChatContentHeight = chatContent.offsetHeight + 'px';
-        };
+    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
+        chatBox.style.display = 'block'; // Mostrar el chat
+        chatFooter.style.display = 'flex'; // Mostrar el pie del chat
+    } else {
+        chatBox.style.display = 'none'; // Ocultar el chat
+        chatFooter.style.display = 'none'; // Ocultar el pie del chat
+    }
+});
 
-        document.getElementById('chatIcon').addEventListener('click', function() {
-            var chatBox = document.getElementById('chatBox');
-            var chatFooter = document.getElementById('chatFooter');
+   document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
+         var chatBox=document.getElementById('chatBox');
+         var chatFooter=document.getElementById('chatFooter');
+         chatBox.style.display='none';
+         chatFooter.style.display='none';
+      });
+   
+   document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
+    var chatBox = document.getElementById('chatBox');
+    var chatContent = document.getElementById('chatContent');
 
-            if (chatBox.style.display === 'none' || chatBox.style.display === '') {
-                chatBox.style.display = 'block'; // Mostrar el chat
-                chatFooter.style.display = 'flex'; // Mostrar el pie del chat
-            } else {
-                chatBox.style.display = 'none'; // Ocultar el chat
-                chatFooter.style.display = 'none'; // Ocultar el pie del chat
-            }
-        });
+    if (chatBox.classList.contains('expanded')) {
+        chatBox.classList.remove('expanded');
+        chatContent.classList.remove('expanded');
+        this.textContent = 'expand_more';
+        chatBox.style.height = initialChatBoxHeight; // Regresar a altura inicial
+        chatContent.style.height = initialChatContentHeight; // Regresar a altura inicial
+    } else {
+        chatBox.classList.add('expanded');
+        chatContent.classList.add('expanded');
+        this.textContent = 'expand_less';
+        chatBox.style.height = '500px'; // Ajusta la altura según sea necesario
+        chatContent.style.height = 'calc(500px - 60px)'; // Ajusta el 60px al tamaño de tu chatFooter
+    }
+});
 
-        document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
-            var chatBox = document.getElementById('chatBox');
-            var chatFooter = document.getElementById('chatFooter');
-            chatBox.style.display = 'none';
-            chatFooter.style.display = 'none';
-        });
+   const examplePrompts = [
+      "¿Cuáles son los próximos eventos estudiantiles?",
+      "¿Cómo puedo registrarme a una clase?",
+      "¿Cuándo son las fechas de exámenes?",
+      "¿Cuál es el horario de atención al estudiante?",
+      "¿Dónde puedo encontrar materiales de estudio?"
+   ];
+   function sendSuggestion(suggestion) {
+      var chatInput=document.getElementById('chatInput');
+      chatInput.value=suggestion; // Rellenar el input con la sugerencia
+      sendMessage(); // Llamar a la función que envía el mensaje
+   }
+  
+   let currentExampleIndex = 0;
 
-        document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
-            var chatBox = document.getElementById('chatBox');
-            var chatContent = document.getElementById('chatContent');
+   function cycleExamplePrompts() {
+      const chatInput = document.getElementById('chatInput');
+      
+      // Establecer el valor del campo de entrada con la sugerencia actual
+      chatInput.placeholder = examplePrompts[currentExampleIndex];
+      
+      // Cambiar al siguiente ejemplo, o regresar al inicio si ya se mostraron todos
+      currentExampleIndex = (currentExampleIndex + 1) % examplePrompts.length;
+   }
 
-            if (chatBox.classList.contains('expanded')) {
-                chatBox.classList.remove('expanded');
-                this.textContent = 'expand_more';
-            } else {
-                chatBox.classList.add('expanded');
-                this.textContent = 'expand_less';
-            }
-        });
+   // Llamar a cycleExamplePrompts cada 5 segundos
+   setInterval(cycleExamplePrompts, 5000);
 
-        const examplePrompts = [
-            "¿Cuáles son los próximos eventos estudiantiles?",
-            "¿Cómo puedo registrarme a una clase?",
-            "¿Cuándo son las fechas de exámenes?",
-            "¿Cuál es el horario de atención al estudiante?",
-            "¿Dónde puedo encontrar materiales de estudio?"
-        ];
-
-        function sendSuggestion(suggestion) {
-            var chatInput = document.getElementById('chatInput');
-            chatInput.value = suggestion; // Rellenar el input con la sugerencia
-            sendMessage(); // Llamar a la función que envía el mensaje
-        }
-
-        let currentExampleIndex = 0;
-
-        function cycleExamplePrompts() {
+   function displaySuggestions() {
+    const suggestionsDiv = document.getElementById('suggestions');
+    suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
+    
+    examplePrompts.forEach((prompt) => {
+        const suggestionButton = document.createElement('button');
+        suggestionButton.textContent = prompt;
+        suggestionButton.classList.add('suggestion-button');
+        
+        // Al hacer clic, copiar el ejemplo al área de texto y enviar el mensaje
+        suggestionButton.addEventListener('click', function() {
             const chatInput = document.getElementById('chatInput');
-
-            // Establecer el valor del campo de entrada con la sugerencia actual
-            chatInput.placeholder = examplePrompts[currentExampleIndex];
-
-            // Cambiar al siguiente ejemplo, o regresar al inicio si ya se mostraron todos
-            currentExampleIndex = (currentExampleIndex + 1) % examplePrompts.length;
-        }
-
-        // Llamar a cycleExamplePrompts cada 5 segundos
-        setInterval(cycleExamplePrompts, 5000);
-
-        function displaySuggestions() {
-            const suggestionsDiv = document.getElementById('suggestions');
-            suggestionsDiv.innerHTML = ''; // Limpiar las sugerencias previas
-
-            examplePrompts.forEach((prompt) => {
-                const suggestionButton = document.createElement('button');
-                suggestionButton.textContent = prompt;
-                suggestionButton.classList.add('suggestion-button');
-
-                // Al hacer clic, copiar el ejemplo al área de texto y enviar el mensaje
-                suggestionButton.addEventListener('click', function() {
-                    const chatInput = document.getElementById('chatInput');
-                    chatInput.value = prompt;
-                    //sendMessage(); // Enviar el mensaje de inmediato
-                });
-
-                suggestionsDiv.appendChild(suggestionButton);
-            });
-        }
-
-        // Función para mostrar/ocultar las sugerencias
-        document.getElementById('toggleSuggestions').addEventListener('click', function() {
-            const suggestionsDiv = document.getElementById('suggestions');
-            const toggleIcon = this.querySelector('.material-icons');
-
-            if (suggestionsDiv.classList.contains('visible')) {
-                suggestionsDiv.classList.remove('visible');
-                toggleIcon.textContent = 'expand_more';
-            } else {
-                suggestionsDiv.classList.add('visible');
-                toggleIcon.textContent = 'expand_less';
-            }
+            chatInput.value = prompt;
+            //sendMessage(); // Enviar el mensaje de inmediato
         });
+        
+        suggestionsDiv.appendChild(suggestionButton);
+    });
+}
 
-        displaySuggestions(); // Llamar la función para mostrar las sugerencias
+// Función para mostrar/ocultar las sugerencias
+document.getElementById('toggleSuggestions').addEventListener('click', function() {
+    const suggestionsDiv = document.getElementById('suggestions');
+    const toggleIcon = this.querySelector('.material-icons');
+
+    if (suggestionsDiv.classList.contains('visible')) {
+        // Ocultar sugerencias
+        suggestionsDiv.classList.remove('visible');
+        suggestionsDiv.style.maxHeight = '0';
+        toggleIcon.textContent = 'expand_more'; // Cambiar el icono a expandir
+    } else {
+        // Mostrar sugerencias
+        suggestionsDiv.classList.add('visible');
+        suggestionsDiv.style.maxHeight = '150px'; // La altura máxima de las sugerencias
+        toggleIcon.textContent = 'expand_less'; // Cambiar el icono a contraer
+    }
+});
+   displaySuggestions(); // Llamar la función para mostrar las sugerencias
 
    let chatHistory=[];
    
