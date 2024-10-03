@@ -275,19 +275,22 @@
                <span class="material-icons">send</span>
            </button>
        </div>
-      <!-- Botón flotante para sugerencias -->
-   <div id="suggestionsToggle" class="btn-group" style="position: absolute; top: 11px; left: 55px; z-index: 1000;">
+      <div id="suggestionsToggle" class="btn-group" style="position: absolute; top: 11px; left: 55px; z-index: 1000;">
     <button id="suggestionsButton" type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.5rem; padding: 0; border: none; background: transparent; color: white;">
         <i class="fas fa-lightbulb"></i>
     </button>
+    <!-- Tooltip o nube de diálogo -->
+    <div id="tooltip" style="position: absolute; top: -35px; left: -20px; background-color: #007bff; color: white; padding: 5px 10px; border-radius: 5px; display: none; font-size: 0.9rem;">
+        Sugerencias
+        <div style="position: absolute; bottom: -10px; left: 20px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #007bff;"></div>
+    </div>
     <div class="dropdown-menu" style="width: 250px;">
         <a class="dropdown-item suggestion-item" href="#">¿Cuál es la duración de las carreras?</a>
         <a class="dropdown-item suggestion-item" href="#">¿Cómo puedo inscribirme?</a>
         <a class="dropdown-item suggestion-item" href="#">¿Cuáles son los requisitos de admisión?</a>
     </div>
 </div>
-
-   </div>
+</div>
    <!-- Start PreLoader
          ============================================= -->
    <div class="se-pre-con2"></div>
@@ -1634,20 +1637,33 @@
 
    </script>
    <script>
-      // Variables para guardar las alturas iniciales
-   var initialChatBoxHeight;
-   var initialChatContentHeight;
-   
-   window.onload=function() {
-      var chatBox=document.getElementById('chatBox');
-      var chatContent=document.getElementById('chatContent');
-      initialChatBoxHeight=chatBox.offsetHeight+'px';
-      initialChatContentHeight=chatContent.offsetHeight+'px';
-   }
-   
-   ;
-   
-   document.getElementById('chatIcon').addEventListener('click', function() {
+   // Variables para guardar las alturas iniciales
+var initialChatBoxHeight;
+var initialChatContentHeight;
+
+window.onload = function() {
+    var chatBox = document.getElementById('chatBox');
+    var chatContent = document.getElementById('chatContent');
+    initialChatBoxHeight = chatBox.offsetHeight + 'px';
+    initialChatContentHeight = chatContent.offsetHeight + 'px';
+
+    // Mostrar el tooltip
+    const tooltip = document.getElementById('tooltip');
+    tooltip.style.display = 'block';
+
+    // Ocultar el tooltip después de 10 segundos
+    setTimeout(function() {
+        tooltip.style.display = 'none';
+    }, 10000); // 10 segundos
+};
+
+document.getElementById('suggestionsButton').addEventListener('click', function() {
+    // Ocultar el tooltip al hacer clic en el botón de sugerencias
+    const tooltip = document.getElementById('tooltip');
+    tooltip.style.display = 'none';
+});
+
+document.getElementById('chatIcon').addEventListener('click', function() {
     var chatBox = document.getElementById('chatBox');
     var chatFooter = document.getElementById('chatFooter');
 
@@ -1659,15 +1675,15 @@
         chatFooter.style.display = 'none'; // Ocultar el pie del chat
     }
 });
-   
-   document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
-         var chatBox=document.getElementById('chatBox');
-         var chatFooter=document.getElementById('chatFooter');
-         chatBox.style.display='none';
-         chatFooter.style.display='none';
-      });
-   
-   document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
+
+document.querySelector('#chatHeader .close-icon').addEventListener('click', function() {
+    var chatBox = document.getElementById('chatBox');
+    var chatFooter = document.getElementById('chatFooter');
+    chatBox.style.display = 'none';
+    chatFooter.style.display = 'none';
+});
+
+document.querySelector('#chatHeader .expand-icon').addEventListener('click', function() {
     var chatBox = document.getElementById('chatBox');
     var chatContent = document.getElementById('chatContent');
 
@@ -1686,7 +1702,7 @@
     }
 });
 
-   document.querySelectorAll('.suggestion-item').forEach(item => {
+document.querySelectorAll('.suggestion-item').forEach(item => {
     item.addEventListener('click', function () {
         const suggestion = this.textContent;
         const chatInput = document.getElementById('chatInput');
