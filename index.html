@@ -8,7 +8,7 @@
 <head>
    <meta charset="utf-8">
    <meta http-equiv="x-ua-compatible" content="ie=edge">
-   <title> Facultad Politécnica - Universidad Nacional del Este</title><div id="chatFooter">
+   <title> Facultad Politécnica - Universidad Nacional del Este</title>
    <meta name="description" content="">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <!-- Place favicon.ico in the root directory -->
@@ -248,43 +248,34 @@
    <div id="chatIcon">
       <span class="material-icons">chat</span>
    </div>
-<div id="chatBox">
-    <div id="chatHeader">
-        <span class="expand-icon material-icons">expand_more</span>
-        Asistente Estudiantil
-        <span class="close-icon material-icons">close</span>
-    </div>
-    <div id="chatContent">
-        <div class="message received">
-            <div class="message-container">
-                <img src="assets/imagen/avatares/chatbot-avatar.png" class="avatar"
-                    style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="Chatbot Avatar">
-                <span>Hola, ¿cómo puedo ayudarte?</span>
+   <div id="chatBox">
+       <div id="chatHeader">
+           <span class="expand-icon material-icons">expand_more</span>
+           Asistente Estudiantil
+           <span class="close-icon material-icons">close</span>
+       </div>
+       <div id="chatContent">
+           <div class="message received">
+               <div class="message-container">
+                   <img src="assets/imagen/avatares/chatbot-avatar.png" class="avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="Chatbot Avatar">
+                   <span>Hola, ¿cómo puedo ayudarte?</span>
+               </div>
+           </div>
+       </div>
+   
+       <div id="chatFooter">
+           <div id="spinner" style="display: none;">
+               <div class="spinner-border text-primary" role="status">
+                  <span class="sr-only">Loading...</span>
+               </div>
             </div>
-        </div>
-    </div>
-
-    <div id="chatFooter">
-        <div id="spinner" style="display: none;">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <textarea id="chatInput" placeholder="Escribe un mensaje..."></textarea>
-        <button id="sendButton">
-            <span class="material-icons">send</span>
-        </button>
-        <div id="suggestionsToggle" class="suggestions-toggle" style="display: none;">
-            <ul class="list-group">
-                <li class="list-group-item suggestion-item">Duración de las carreras de la Fpune</li>
-                <li class="list-group-item suggestion-item">Proceso de admisión</li>
-                <li class="list-group-item suggestion-item">Contacto con Secretaría</li>
-            </ul>
-        </div>
-        <button id="suggestionButton" class="btn btn-outline-secondary">Sugerencias</button>
-    </div>
-</div>
-
+           <textarea id="chatInput" placeholder="Escribe un mensaje..."></textarea>
+           <button id="sendButton">
+               <span class="material-icons">send</span>
+           </button>
+       </div>
+   </div>
    <!-- Start PreLoader
          ============================================= -->
    <div class="se-pre-con2"></div>
@@ -1681,21 +1672,15 @@
         chatBox.style.height = '500px'; // Ajusta la altura según sea necesario
         chatContent.style.height = 'calc(500px - 60px)'; // Ajusta el 60px al tamaño de tu chatFooter
     }
-   });
-
-   document.getElementById('suggestionButton').addEventListener('click', function() {
-    const suggestions = document.getElementById('suggestionsToggle');
-    suggestions.style.display = (suggestions.style.display === 'none' || suggestions.style.display === '') ? 'block' : 'none';
 });
 
-document.querySelectorAll('.suggestion-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-        const textarea = document.getElementById('chatInput');
-        textarea.value = this.textContent;
-        document.getElementById('suggestionsToggle').style.display = 'none';
-    });
-});
-
+   
+   function sendSuggestion(suggestion) {
+      var chatInput=document.getElementById('chatInput');
+      chatInput.value=suggestion; // Rellenar el input con la sugerencia
+      sendMessage(); // Llamar a la función que envía el mensaje
+   }
+   
    let chatHistory=[];
    
    async function sendMessage() {
