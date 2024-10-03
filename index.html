@@ -275,12 +275,12 @@
                <span class="material-icons">send</span>
            </button>
        </div>
-<!-- Botón flotante para sugerencias con tooltip -->
+<!-- Botón flotante para sugerencias con tooltip nativo de HTML -->
 <div id="suggestionsToggle" class="btn-group" style="position: absolute; top: 11px; left: 55px; z-index: 1000;">
-    <button id="suggestionsButton" type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.5rem; padding: 0; border: none; background: transparent; color: white;">
+    <button id="suggestionsButton" type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.5rem; padding: 0; border: none; background: transparent; color: white;" title="Sugerencias">
         <i class="fas fa-lightbulb"></i>
     </button>
-    <!-- Tooltip o nube de diálogo -->
+    <!-- Tooltip personalizado (aparece al cargar la página) -->
     <div id="tooltip" style="position: absolute; top: -35px; left: -20px; background-color: white; color: black; padding: 5px 10px; border-radius: 5px; border: 1px solid black; display: none; font-size: 0.9rem; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
         Sugerencias
         <div style="position: absolute; bottom: -10px; left: 20px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid white; border-top-color: white; border: 1px solid black; border-top-width: 0;"></div>
