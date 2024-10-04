@@ -1668,13 +1668,13 @@ document.getElementById('suggestionsButton').addEventListener('click', function(
 document.getElementById('chatIcon').addEventListener('click', function() {
     var chatBox = document.getElementById('chatBox');
     var chatFooter = document.getElementById('chatFooter');
-
+    
     if (chatBox.style.display === 'none' || chatBox.style.display === '') {
-        chatBox.style.display = 'block'; // Mostrar el chat
-        chatFooter.style.display = 'flex'; // Mostrar el pie del chat
+        chatBox.style.display = 'flex'; // Cambiar de block a flex si estás utilizando flexbox
+        chatFooter.style.display = 'flex';
     } else {
-        chatBox.style.display = 'none'; // Ocultar el chat
-        chatFooter.style.display = 'none'; // Ocultar el pie del chat
+        chatBox.style.display = 'none';
+        chatFooter.style.display = 'none';
     }
 });
 
