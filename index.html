@@ -1830,9 +1830,6 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
             messageContainer.appendChild(responseText);
             responseMessageDiv.appendChild(messageContainer);
             chatContent.appendChild(responseMessageDiv);
-         
-            // Convierte el texto en un enlace si es necesario
-            responseText.innerHTML = linkify(text);
    
             // Capturar el texto ya formateado con innerHTML (se formatea antes de comenzar)
             responseText.innerHTML=text;
@@ -1862,23 +1859,6 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
          });
    }
 
-   // Función para detectar enlaces en un texto y convertirlos en HTML clickeable
-function linkify(text) {
-    // Patrones para enlaces
-    const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    const wwwPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-    const mailPattern = /(([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+))/gim;
-    
-    // Patrón para detectar enlaces en formato Markdown [texto](enlace)
-    const markdownPattern = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
-
-    // Reemplazar los enlaces detectados
-    return text
-        .replace(markdownPattern, '<a href="$2" target="_blank">$1</a>') // Detectar formato [texto](enlace)
-        .replace(urlPattern, '<a href="$1" target="_blank">$1</a>') // Detectar URLs comunes
-        .replace(wwwPattern, '$1<a href="http://$2" target="_blank">$2</a>') // Detectar www
-        .replace(mailPattern, '<a href="mailto:$1">$1</a>'); // Detectar correos electrónicos
-}
    
    
    function addFeedbackButtons(messageDiv, text) {
