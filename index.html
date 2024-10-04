@@ -1830,6 +1830,9 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
             messageContainer.appendChild(responseText);
             responseMessageDiv.appendChild(messageContainer);
             chatContent.appendChild(responseMessageDiv);
+         
+            // Convierte el texto en un enlace si es necesario
+            responseText.innerHTML = linkify(text);
    
             // Capturar el texto ya formateado con innerHTML (se formatea antes de comenzar)
             responseText.innerHTML=text;
@@ -1858,7 +1861,18 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
             typeChar();
          });
    }
-   
+
+      // Función para detectar enlaces en un texto y convertirlos en HTML clickeable
+   function linkify(text) {
+    const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    const wwwPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    const mailPattern = /(([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+))/gim;
+
+    return text
+        .replace(urlPattern, '<a href="$1" target="_blank">$1</a>')
+        .replace(wwwPattern, '$1<a href="http://$2" target="_blank">$2</a>')
+        .replace(mailPattern, '<a href="mailto:$1">$1</a>');
+}
    
    
    function addFeedbackButtons(messageDiv, text) {
