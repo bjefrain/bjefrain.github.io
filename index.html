@@ -1806,60 +1806,64 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
    spinner.style.display='none';
    chatInput.focus();
    }
+
+   function linkify(text) {
+    // Expresión regular para encontrar URLs en el texto
+    const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    
+    // Reemplazar las URLs encontradas con enlaces HTML
+    return text.replace(urlPattern, function(url) {
+        return `<a href="${url}" target="_blank">${url}</a>`;
+    });
    }
    
    function simulateTyping(text, chatContent) {
-      return new Promise((resolve)=> {
-            const responseMessageDiv=document.createElement('div');
-            responseMessageDiv.className='message received';
-   
-            var messageContainer=document.createElement('div');
-            messageContainer.className='message-container';
-   
-            var botAvatar=document.createElement('img');
-            botAvatar.src='assets/imagen/avatares/chatbot-avatar.png';
-            botAvatar.style.width='40px';
-            botAvatar.style.height='40px';
-            botAvatar.style.borderRadius='50%';
-            botAvatar.style.marginRight='10px';
-            botAvatar.className='avatar';
-   
-            var responseText=document.createElement('span');
-   
-            messageContainer.appendChild(botAvatar);
-            messageContainer.appendChild(responseText);
-            responseMessageDiv.appendChild(messageContainer);
-            chatContent.appendChild(responseMessageDiv);
-   
-            // Capturar el texto ya formateado con innerHTML (se formatea antes de comenzar)
-            responseText.innerHTML=text;
-            const formattedText=responseText.innerHTML;
-            responseText.innerHTML=""; // Limpiamos para la simulación
-   
-            let index=0;
-   
-            // Función que simula la escritura
-            function typeChar() {
-               if (index < formattedText.length) {
-                  // Mostrar el contenido carácter por carácter usando innerHTML
-                  responseText.innerHTML=formattedText.slice(0, index + 1);
-                  index++;
-                  chatContent.scrollTop=chatContent.scrollHeight; // Mantener scroll abajo
-                  setTimeout(typeChar, 20); // Ajustar la velocidad de la simulación
-               }
-   
-               else {
-                  addFeedbackButtons(responseMessageDiv, text); // Añadir los botones de feedback al final
-                  resolve();
-               }
-            }
-   
-            // Iniciar la simulación
-            typeChar();
-         });
-   }
+    return new Promise((resolve) => {
+        const responseMessageDiv = document.createElement('div');
+        responseMessageDiv.className = 'message received';
 
-   
+        var messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container';
+
+        var botAvatar = document.createElement('img');
+        botAvatar.src = 'assets/imagen/avatares/chatbot-avatar.png';
+        botAvatar.style.width = '40px';
+        botAvatar.style.height = '40px';
+        botAvatar.style.borderRadius = '50%';
+        botAvatar.style.marginRight = '10px';
+        botAvatar.className = 'avatar';
+
+        var responseText = document.createElement('span');
+
+        messageContainer.appendChild(botAvatar);
+        messageContainer.appendChild(responseText);
+        responseMessageDiv.appendChild(messageContainer);
+        chatContent.appendChild(responseMessageDiv);
+
+        // Convertir el texto con URLs a enlaces clickeables
+        const formattedText = linkify(text);
+        responseText.innerHTML = ""; // Limpiar para la simulación
+
+        let index = 0;
+
+        // Función que simula la escritura
+        function typeChar() {
+            if (index < formattedText.length) {
+                // Mostrar el contenido carácter por carácter usando innerHTML
+                responseText.innerHTML = formattedText.slice(0, index + 1);
+                index++;
+                chatContent.scrollTop = chatContent.scrollHeight; // Mantener scroll abajo
+                setTimeout(typeChar, 20); // Ajustar la velocidad de la simulación
+            } else {
+                addFeedbackButtons(responseMessageDiv, text); // Añadir los botones de feedback al final
+                resolve();
+            }
+        }
+
+        // Iniciar la simulación
+        typeChar();
+    });
+}
    
    function addFeedbackButtons(messageDiv, text) {
       const buttonsDiv=document.createElement('div');
