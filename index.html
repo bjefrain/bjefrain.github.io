@@ -1812,9 +1812,9 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
     // Expresión regular para encontrar URLs en el texto
     const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     
-    // Reemplazar las URLs encontradas con enlaces HTML
+    // Reemplazar las URLs encontradas con enlaces HTML y aplicar estilo directamente
     return text.replace(urlPattern, function(url) {
-        return `<a href="${url}" target="_blank">${url}</a>`;
+        return `<a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${url}</a>`;
     });
    }
    
