@@ -1616,7 +1616,6 @@
    <script src="../assets/js/main.js"></script>
    <script src="../assets/js/gallery.js"></script>
    <script src="../assets/fancy/jquery.fancybox.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <script>
       var a = new FgGallery('.fg-gallery', {
@@ -1810,52 +1809,55 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
    }
    
    function simulateTyping(text, chatContent) {
-    return new Promise((resolve) => {
-        const responseMessageDiv = document.createElement('div');
-        responseMessageDiv.className = 'message received';
-
-        var messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container';
-
-        var botAvatar = document.createElement('img');
-        botAvatar.src = 'assets/imagen/avatares/chatbot-avatar.png';
-        botAvatar.style.width = '40px';
-        botAvatar.style.height = '40px';
-        botAvatar.style.borderRadius = '50%';
-        botAvatar.style.marginRight = '10px';
-        botAvatar.className = 'avatar';
-
-        var responseText = document.createElement('span');
-
-        messageContainer.appendChild(botAvatar);
-        messageContainer.appendChild(responseText);
-        responseMessageDiv.appendChild(messageContainer);
-        chatContent.appendChild(responseMessageDiv);
-
-        // Convertir Markdown a HTML y capturar el texto ya formateado
-        const formattedText = marked(text);
-        responseText.innerHTML = ""; // Limpiar para la simulación
-
-        let index = 0;
-
-        // Función que simula la escritura
-        function typeChar() {
-            if (index < formattedText.length) {
-                // Mostrar el contenido carácter por carácter usando innerHTML
-                responseText.innerHTML = formattedText.slice(0, index + 1);
-                index++;
-                chatContent.scrollTop = chatContent.scrollHeight; // Mantener scroll abajo
-                setTimeout(typeChar, 20); // Ajustar la velocidad de la simulación
-            } else {
-                addFeedbackButtons(responseMessageDiv, text); // Añadir los botones de feedback al final
-                resolve();
+      return new Promise((resolve)=> {
+            const responseMessageDiv=document.createElement('div');
+            responseMessageDiv.className='message received';
+   
+            var messageContainer=document.createElement('div');
+            messageContainer.className='message-container';
+   
+            var botAvatar=document.createElement('img');
+            botAvatar.src='assets/imagen/avatares/chatbot-avatar.png';
+            botAvatar.style.width='40px';
+            botAvatar.style.height='40px';
+            botAvatar.style.borderRadius='50%';
+            botAvatar.style.marginRight='10px';
+            botAvatar.className='avatar';
+   
+            var responseText=document.createElement('span');
+   
+            messageContainer.appendChild(botAvatar);
+            messageContainer.appendChild(responseText);
+            responseMessageDiv.appendChild(messageContainer);
+            chatContent.appendChild(responseMessageDiv);
+   
+            // Capturar el texto ya formateado con innerHTML (se formatea antes de comenzar)
+            responseText.innerHTML=text;
+            const formattedText=responseText.innerHTML;
+            responseText.innerHTML=""; // Limpiamos para la simulación
+   
+            let index=0;
+   
+            // Función que simula la escritura
+            function typeChar() {
+               if (index < formattedText.length) {
+                  // Mostrar el contenido carácter por carácter usando innerHTML
+                  responseText.innerHTML=formattedText.slice(0, index + 1);
+                  index++;
+                  chatContent.scrollTop=chatContent.scrollHeight; // Mantener scroll abajo
+                  setTimeout(typeChar, 20); // Ajustar la velocidad de la simulación
+               }
+   
+               else {
+                  addFeedbackButtons(responseMessageDiv, text); // Añadir los botones de feedback al final
+                  resolve();
+               }
             }
-        }
-
-        // Iniciar la simulación
-        typeChar();
-    });
-}
+   
+            // Iniciar la simulación
+            typeChar();
+         });
+   }
 
    
    
