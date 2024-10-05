@@ -1807,7 +1807,17 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
    chatInput.focus();
    }
    }
-   
+      
+   function linkify(text) {
+    // Expresión regular para encontrar URLs en el texto
+    const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    
+    // Reemplazar las URLs encontradas con enlaces HTML
+    return text.replace(urlPattern, function(url) {
+        return `<a href="${url}" target="_blank">${url}</a>`;
+    });
+   }
+      
    function simulateTyping(text, chatContent) {
     return new Promise((resolve) => {
         const responseMessageDiv = document.createElement('div');
