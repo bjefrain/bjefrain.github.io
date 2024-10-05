@@ -1616,8 +1616,6 @@
    <script src="../assets/js/main.js"></script>
    <script src="../assets/js/gallery.js"></script>
    <script src="../assets/fancy/jquery.fancybox.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/linkifyjs/3.0.3/linkify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/linkifyjs/3.0.3/linkify-html.min.js"></script>
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <script>
       var a = new FgGallery('.fg-gallery', {
@@ -1832,11 +1830,6 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
             messageContainer.appendChild(responseText);
             responseMessageDiv.appendChild(messageContainer);
             chatContent.appendChild(responseMessageDiv);
-
-            // Utilizar Linkify para convertir cualquier URL en texto a un enlace HTML
-            responseText.innerHTML = linkifyHtml(text, {
-               defaultProtocol: 'https' // Asegura que todos los enlaces sin protocolo usen 'https'
-            });
    
             // Capturar el texto ya formateado con innerHTML (se formatea antes de comenzar)
             responseText.innerHTML=text;
