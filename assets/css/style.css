@@ -6572,9 +6572,3 @@ header.header.single-head .navbar.in {
     75% { transform: translateX(3px); }
     100% { transform: translateX(-2px); }
 }
-
-.dropdown-item.suggestion-item::before {
-      content: "• "; /* Agrega una viñeta simple */
-      margin-right: 5px; /* Espacio entre la viñeta y el texto */
-      color: black; /* Cambia el color de la viñeta si lo necesitas */
-  }
