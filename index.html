@@ -1706,6 +1706,7 @@ document.querySelector('#chatHeader .expand-icon').addEventListener('click', fun
 
 document.querySelectorAll('.suggestion-item').forEach(item => {
     item.addEventListener('click', function () {
+        event.preventDefault();
         const suggestion = this.textContent;
         const chatInput = document.getElementById('chatInput');
         chatInput.value = suggestion;
