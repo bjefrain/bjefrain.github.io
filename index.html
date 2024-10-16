@@ -1770,6 +1770,11 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
 
             await simulateTyping(data, chatContent);
 
+            // Log para verificar los datos que estamos enviando
+            console.log("Guardando automáticamente el mensaje y la respuesta:");
+            console.log("User message:", message);
+            console.log("Chatbot response:", data);
+
             // Guardar automáticamente los mensajes como "feedback"
             const feedback = {
                 message_id: messageId,
@@ -1781,7 +1786,8 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
             };
 
             // Enviar el feedback/mensaje al backend
-            sendFeedback(feedback); // Aprovechamos la función existente
+            await sendFeedback(feedback); // Aprovechamos la función existente
+            console.log("Feedback guardado automáticamente:", feedback);
 
         } catch (error) {
             var errorMessageDiv = document.createElement('div');
@@ -1789,6 +1795,7 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
             errorMessageDiv.textContent = 'Hubo un error al enviar el mensaje.';
             chatContent.appendChild(errorMessageDiv);
             chatContent.scrollTop = chatContent.scrollHeight;
+            console.error("Error al enviar el mensaje:", error);
         }
 
         chatInput.disabled = false;
