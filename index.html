@@ -1760,28 +1760,28 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
                 },
                 body: JSON.stringify({ query: message, messages: chatHistory })
             });
+
             const data = await response.json();
             const messageId = generateUUID(); // Generar el message_id
             const timestamp = Date.now(); // Generar el timestamp
 
             // Agregar el mensaje al historial del chat
-            chatHistory.push({ role: 'user', content: message, answer: data, message_id: messageId, timestamp: timestamp });
-            chatHistory.push({ role: 'assistant', content: data, answer: "", message_id: messageId, timestamp: timestamp });
+            chatHistory.push({ role: 'user', content: message, message_id: messageId, timestamp: timestamp });
+            chatHistory.push({ role: 'assistant', content: data, message_id: messageId, timestamp: timestamp });
 
             await simulateTyping(data, chatContent);
 
-            // Crear feedback vacío y guardar automáticamente los mensajes
+            // Enviar el feedback vacío inmediatamente
             const feedback = {
                 message_id: messageId,
                 timestamp: timestamp,
-                feedback_type: "", // Feedback vacío
+                feedback_type: "", // No hay feedback explícito aún
                 user_id: getSessionId(),
                 user_message: message,  // Mensaje enviado por el usuario
                 chatbot_response: data   // Respuesta del chatbot
             };
 
-            // Enviar el feedback vacío al backend para que se guarde
-            await sendFeedback(feedback); // Aprovechamos la función existente para guardar el feedback
+            await sendFeedback(feedback); // Enviar el feedback vacío
 
         } catch (error) {
             var errorMessageDiv = document.createElement('div');
@@ -1884,11 +1884,11 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
    }
    
    function handleFeedback(feedbackType, likeButton, dislikeButton, message) {
-    const chatRecord = chatHistory.find(item => item.answer === message);
+    const chatRecord = chatHistory.find(item => item.content === message);
 
     if (chatRecord) {
-        const messageId = chatRecord.message_id; // Usar el message_id del historial
-        const timestamp = chatRecord.timestamp; // Usar el timestamp del historial
+        const messageId = chatRecord.message_id;
+        const timestamp = chatRecord.timestamp;
 
         if (feedbackType === 'like') {
             likeButton.querySelector('i').style.color = 'green';
@@ -1910,14 +1910,13 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
         // Crear el feedback actualizado
         const feedback = {
             message_id: messageId,
-            timestamp: timestamp, // Enviar el timestamp también
-            feedback_type: chatRecord.feedback, // Like o dislike
+            timestamp: timestamp,
+            feedback_type: chatRecord.feedback,
             user_id: getSessionId(),
             user_message: chatRecord.content,
-            chatbot_response: chatRecord.answer
+            chatbot_response: chatRecord.content
         };
 
-        // Enviar el feedback actualizado al backend
         sendFeedback(feedback);
     } else {
         console.error('Message not found in chat history');
@@ -1925,27 +1924,20 @@ document.querySelectorAll('.suggestion-item').forEach(item => {
 }
    
    async function sendFeedback(feedback) {
-      try {
-         const response=await fetch('https://skhlivck46.execute-api.us-west-1.amazonaws.com/dev/chat', {
-   
+    try {
+        const response = await fetch('https://skhlivck46.execute-api.us-west-1.amazonaws.com/dev/chat', {
             method: 'POST',
             headers: {
-               'Content-Type': 'application/json'
-            }
-   
-            ,
-            body: JSON.stringify({
-               feedback: feedback
-            })
-      });
-   const data=await response.json();
-   console.log('Feedback guardado:', data);
-   }
-   
-   catch (error) {
-      console.error('Error al enviar feedback:', error);
-   }
-   }
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ feedback: feedback })
+        });
+        const data = await response.json();
+        console.log('Feedback guardado:', data);
+    } catch (error) {
+        console.error('Error al enviar feedback:', error);
+    }
+}
    
 function showReportForm(messageDiv, message, reportButton) {
     // Verificar si el formulario de reporte ya existe
