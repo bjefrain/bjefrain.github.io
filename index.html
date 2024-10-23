@@ -1716,7 +1716,7 @@ var initialChatBoxHeight;
                     const messageId = generateUUID();  // Generar el message_id en el frontend
                     const timestamp = Date.now();  // Generar el timestamp en el frontend
 
-                    const response = await fetch('https://your-api-gateway-url/chat', {
+                    const response = await fetch('https://5e4nhl1im9.execute-api.us-west-1.amazonaws.com/dev/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1834,7 +1834,7 @@ var initialChatBoxHeight;
 
         async function sendFeedback(feedback) {
             try {
-                const response = await fetch('https://your-api-gateway-url/chat', {
+                const response = await fetch('https://5e4nhl1im9.execute-api.us-west-1.amazonaws.com/dev/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
